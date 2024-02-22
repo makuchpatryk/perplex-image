@@ -2,15 +2,14 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: "nuxt-3-starter",
+      title: "Perplex Image",
       charset: "utf-16",
       viewport: "width=device-width, initial-scale=1",
-      meta: [{ name: "description", content: "Starter template for Nuxt 3." }],
+      meta: [{ name: "description", content: "Perplex Image" }],
     },
   },
   modules: [
-    "@nuxtjs/supabase",
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
-  ]
+  ],
 });
