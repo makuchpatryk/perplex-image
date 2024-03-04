@@ -1,4 +1,4 @@
-export async function useImage(number=0) {
+export async function useImage(number='0') {
   const { url, width, height } = await $fetch(`/api/image/?per_page=${20}&&number=${number}`);
 
   const imageToBase64 = (

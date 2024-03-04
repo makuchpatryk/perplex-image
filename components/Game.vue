@@ -2,26 +2,36 @@
 import { useImagesStore } from "../stores/images";
 
 interface Props {
-  number: number;
+  number: string;
+  level: string;
+  widthGame: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  number: 0,
+  number: "1",
+  level: "1",
+  widthGame: 1000,
 });
 
 let isModalOpened = ref<boolean>(false);
 let shuffledPieces = ref<ImagePieces[]>([]);
-const COLUMNS = 13;
-const WIDTH_GAME = 1000;
 let highlight = ref<number | string>("");
-let imgSrc = ref<string | number>("");
-let rand = Math.round(Math.random() * 9);
+let imgSrc = ref<string | ArrayBuffer | null>("");
 
 const { shuffle, imageToBase64, url, width, height } = await useImage(
   props.number
 );
+const {
+  startStopwatch,
+  stopStopwatch,
+  resetStopwatch,
+  updateStopwatch,
+  displayTime,
+} = await useStopwatch();
 
-const heightScreen = ref<number>(Math.round((height / width) * WIDTH_GAME));
+const heightScreen = ref<number>(
+  Math.round((height / width) * props.widthGame)
+);
 
 const checkIfIsCorrect = () => {
   return shuffledPieces.value.every((i, k) => {
@@ -93,50 +103,71 @@ onMounted(() => {
   });
 
   const pieces: ImagePieces[] = [];
-  const widthElement = WIDTH_GAME / COLUMNS;
+  const widthElement = props.widthGame / Number(props.level);
   const heightElement =
-    ((height / width) * WIDTH_GAME) / Math.round((height / width) * COLUMNS);
+    ((height / width) * props.widthGame) /
+    Math.round((height / width) * Number(props.level));
 
-  for (let i = 0; i < COLUMNS * Math.round((height / width) * COLUMNS); i++) {
+  for (
+    let i = 0;
+    i <
+    Number(props.level) * Math.round((height / width) * Number(props.level));
+    i++
+  ) {
     pieces[i] = {
       position: i,
-      backgroundPosition: `-${widthElement * Math.round(i % COLUMNS)}px -${
-        heightElement * Math.floor(i / COLUMNS)
-      }px`,
+      backgroundPosition: `-${
+        widthElement * Math.round(i % Number(props.level))
+      }px -${heightElement * Math.floor(i / Number(props.level))}px`,
       width: `${widthElement}px`,
       height: `${heightElement}px`,
     };
   }
   shuffledPieces.value = shuffle(pieces);
+  startStopwatch();
 });
 </script>
 
 <template>
-  <div
-    :style="{
-      height: `${heightScreen + (COLUMNS - 1)}px`,
-      width: `${WIDTH_GAME + (COLUMNS - 1)}px`,
-    }"
+  <Modal
+    :isOpen="isModalOpened"
+    @modal-close="closeModal"
+    @submit="submitHandler"
   >
-    <Modal
-      :isOpen="isModalOpened"
-      @modal-close="closeModal"
-      @submit="submitHandler"
-      name="first-modal"
-    >
-      <template #header>You won!!!!</template>
-    </Modal>
-    <img :src="imgSrc" width="400px" class="m-2 right" />
-    <div class="flex flex-wrap gap-px">
-      <Piece
-        v-for="(item, key) in shuffledPieces"
-        :item="item"
-        :key="item.position"
-        :img-src="imgSrc"
-        :is-highlight="highlight === item.position"
-        @swap="onSwap"
-        @drag-enter="onDragEnter"
-      />
+    <template #header>Summary</template>
+  </Modal>
+
+  <div class="flex mx-6 my-12 w-full">
+    <div class="w-10/12 flex justify-center">
+      <div
+        class="overflow-auto"
+        :style="{
+          height: `${heightScreen}px`,
+          width: `${widthGame}px`,
+        }"
+      >
+        <div
+          class="flex flex-wrap"
+          :style="{
+            minWidth: `${widthGame}px`,
+          }"
+        >
+          <Piece
+            v-for="(item, key) in shuffledPieces"
+            :item="item"
+            :key="item.position"
+            :img-src="imgSrc"
+            :is-highlight="highlight === item.position"
+            :widthGame="widthGame"
+            @swap="onSwap"
+            @drag-enter="onDragEnter"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="w-2/12">
+      <img :src="imgSrc" width="400px" class="ml-2 right" />
+      <span v-text="displayTime" />
     </div>
   </div>
 </template>

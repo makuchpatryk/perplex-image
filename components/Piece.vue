@@ -8,6 +8,7 @@ interface Props {
   item: ImagePieces;
   isHighlight: boolean;
   imgSrc: string;
+  widthGame: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,12 +17,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(["swap", "drag-enter"]);
 
-const startDrag = (evt, position: number | string) => {
+const startDrag = (
+  evt: DragEvent & { dataTransfer?: DataTransfer },
+  position: string
+) => {
   evt.dataTransfer.dropEffect = "move";
   evt.dataTransfer.effectAllowed = "move";
   evt.dataTransfer.setData("position", position);
 };
-const onDragEnter = (evt, position: number | string) => {
+const onDragEnter = (evt: DragEvent, position: number | string) => {
   evt.preventDefault();
   evt.stopPropagation();
 
@@ -30,7 +34,10 @@ const onDragEnter = (evt, position: number | string) => {
   });
 };
 
-const onDrop = (evt, positionCurrent: number | string) => {
+const onDrop = (
+  evt: DragEvent & { dataTransfer?: DataTransfer },
+  positionCurrent: string
+) => {
   const position = evt.dataTransfer.getData("position");
 
   emit("swap", {
@@ -47,6 +54,7 @@ const onDrop = (evt, positionCurrent: number | string) => {
     @dragenter="onDragEnter($event, item.position)"
     :key="item.position"
     :class="isHighlight && 'opacity-50'"
+    class="cursor-grab"
   >
     <div
       draggable="true"
@@ -57,7 +65,7 @@ const onDrop = (evt, positionCurrent: number | string) => {
         width: item.width,
         height: item.height,
         backgroundImage: `url(${imgSrc})`,
-        backgroundSize: '1000px auto',
+        backgroundSize: `${widthGame}px auto`,
       }"
     />
   </div>
