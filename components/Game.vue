@@ -45,8 +45,11 @@ const openModal = () => {
 const closeModal = () => {
   isModalOpened.value = false;
 };
+const onCloseModal = () => {
+  closeModal();
+};
 
-const submitHandler = () => {
+const onSubmitHandler = () => {
   //here you do whatever
 };
 
@@ -94,6 +97,7 @@ const onSwap = ({
 
   if (checkIfIsCorrect()) {
     openModal();
+    stopStopwatch();
   }
 };
 
@@ -129,13 +133,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <Modal
-    :isOpen="isModalOpened"
-    @modal-close="closeModal"
-    @submit="submitHandler"
-  >
-    <template #header>Summary</template>
-  </Modal>
+  <FinishModal
+    :isModalOpened="isModalOpened"
+    :time="displayTime"
+    :level="level"
+    @close="onCloseModal"
+    @submit="onSubmitHandler"
+  />
 
   <div class="flex mx-6 my-12 w-full justify-between">
     <div class="flex justify-start overflow-auto">
