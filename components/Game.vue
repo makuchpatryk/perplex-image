@@ -137,10 +137,9 @@ onMounted(() => {
     <template #header>Summary</template>
   </Modal>
 
-  <div class="flex mx-6 my-12 w-full">
-    <div class="w-10/12 flex justify-center">
+  <div class="flex mx-6 my-12 w-full justify-between">
+    <div class="flex justify-start overflow-auto">
       <div
-        class="overflow-auto"
         :style="{
           height: `${heightScreen}px`,
           width: `${widthGame}px`,
@@ -165,7 +164,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="w-2/12">
+    <div>
       <img :src="imgSrc" width="400px" class="ml-2 right" />
       <span v-text="displayTime" />
     </div>
