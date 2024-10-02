@@ -1,26 +1,30 @@
 <script setup lang="ts">
 import { useImagesStore } from "../stores/images";
+import { storeToRefs } from "pinia";
+import { WIDTH_GAME } from "../constants";
 
 interface Props {
-  number: string;
   level: string;
-  widthGame: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  number: "1",
   level: "1",
-  widthGame: 1000,
 });
+
+const { seletedImage, images } = storeToRefs(useImagesStore());
+const { shuffle, imageToBase64 } = await useImage();
+
+const {
+  height,
+  width,
+  src: { large: url },
+} = seletedImage.value;
 
 let isModalOpened = ref<boolean>(false);
 let shuffledPieces = ref<ImagePieces[]>([]);
 let highlight = ref<number | string>("");
 let imgSrc = ref<string | ArrayBuffer | null>("");
 
-const { shuffle, imageToBase64, url, width, height } = await useImage(
-  props.number
-);
 const {
   startStopwatch,
   stopStopwatch,
@@ -29,9 +33,7 @@ const {
   displayTime,
 } = await useStopwatch();
 
-const heightScreen = ref<number>(
-  Math.round((height / width) * props.widthGame)
-);
+const heightScreen = ref<number>(Math.round((height / width) * WIDTH_GAME));
 
 const checkIfIsCorrect = () => {
   return shuffledPieces.value.every((i, k) => {
@@ -77,11 +79,14 @@ const onSwap = ({
     shuffledPieces.value = [
       ...shuffledPieces.value.map((i) => {
         if (i.position === item2.position) {
+          console.log("item1", item1);
           return {
             ...item1,
           };
         }
         if (i.position === item1.position) {
+          console.log("item2", item2);
+
           return {
             ...item2,
           };
@@ -107,9 +112,9 @@ onMounted(() => {
   });
 
   const pieces: ImagePieces[] = [];
-  const widthElement = props.widthGame / Number(props.level);
+  const widthElement = WIDTH_GAME / Number(props.level);
   const heightElement =
-    ((height / width) * props.widthGame) /
+    ((height / width) * WIDTH_GAME) /
     Math.round((height / width) * Number(props.level));
 
   for (
@@ -140,19 +145,18 @@ onMounted(() => {
     @close="onCloseModal"
     @submit="onSubmitHandler"
   />
-
   <div class="flex mx-6 my-12 w-full justify-between">
     <div class="flex justify-start overflow-auto">
       <div
         :style="{
           height: `${heightScreen}px`,
-          width: `${widthGame}px`,
+          width: `${WIDTH_GAME}px`,
         }"
       >
         <div
           class="flex flex-wrap"
           :style="{
-            minWidth: `${widthGame}px`,
+            minWidth: `${WIDTH_GAME}px`,
           }"
         >
           <Piece
@@ -161,7 +165,6 @@ onMounted(() => {
             :key="item.position"
             :img-src="imgSrc"
             :is-highlight="highlight === item.position"
-            :widthGame="widthGame"
             @swap="onSwap"
             @drag-enter="onDragEnter"
           />
@@ -169,8 +172,7 @@ onMounted(() => {
       </div>
     </div>
     <div>
-      <img :src="imgSrc" width="400px" class="ml-2 right" />
-      <span v-text="displayTime" />
+      <GameSidebar :imgSrc="imgSrc" :displayTime="displayTime" />
     </div>
   </div>
 </template>

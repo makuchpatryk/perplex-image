@@ -8,8 +8,12 @@ export default defineNuxtConfig({
       meta: [{ name: "description", content: "Perplex Image" }],
     },
   },
-  modules: [
-    "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
-  ],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "nuxt-icon"],
+  plugins: [{ src: "~/plugins/directive", mode: "all" }],
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
 });

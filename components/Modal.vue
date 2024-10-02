@@ -1,40 +1,42 @@
 <script setup>
-import { onClickOutside } from "@vueuse/core";
-
 const props = defineProps({
   isOpen: Boolean,
 });
 
 const emit = defineEmits(["modal-close"]);
 
-const target = ref(null);
-onClickOutside(target, () => emit("modal-close"));
+const onClickOutside = () => {
+  emit("modal-close");
+};
 </script>
 
 <template>
-  <div v-if="isOpen" class="modal-mask">
-    <div class="modal-wrapper">
-      <div class="modal-container" ref="target">
-        <div class="modal-header">
-          <slot name="header"> default header </slot>
-        </div>
-        <div class="modal-body">
-          <slot name="content"> default content </slot>
-        </div>
-        <div class="modal-footer">
-          <slot name="footer">
-            <div>
-              <button
-                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
-                @click.stop="emit('modal-close')"
-              >
-                Submit
-              </button>
+  <div>
+    <Teleport to="body">
+      <div v-if="isOpen" class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container" v-click-outside="onClickOutside">
+            <div class="modal-header">
+              <slot name="header"> default header </slot>
             </div>
-          </slot>
+            <div class="modal-body">
+              <slot name="content"> default content </slot>
+            </div>
+            <div class="modal-footer">
+              <slot name="footer">
+                <div>
+                  <button
+                    class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
+                    @click.stop="emit('modal-close')"
+                    v-text="Submit"
+                  />
+                </div>
+              </slot>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
   </div>
 </template>
 

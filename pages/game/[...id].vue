@@ -1,9 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const route = useRoute();
+import { useImagesStore } from "../../stores/images";
+
+const { getImage } = useImagesStore();
+
+getImage({ id: route.params.id });
+</script>
 
 <template>
-  <Game
-    :number="$route.params.id && $route.params.id[0]"
-    :level="$route.query.level"
-    :widthGame="Number($route.query.width)"
-  />
+  <Game :level="$route.query.level" />
 </template>

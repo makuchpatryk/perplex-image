@@ -1,6 +1,4 @@
-export async function useImage(number='0') {
-  const { url, width, height } = await $fetch(`/api/image/?per_page=${20}&&number=${number}`);
-
+export async function useImage() {
   const imageToBase64 = (
     url: string,
     callback: (a: string | ArrayBuffer | null) => void
@@ -34,5 +32,5 @@ export async function useImage(number='0') {
     return array;
   };
 
-  return { shuffle, imageToBase64, url, width, height }
+  return { shuffle, imageToBase64 }
 }

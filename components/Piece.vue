@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useImagesStore } from "../stores/images";
+import { WIDTH_GAME } from "../constants";
 
 const { shuffledPieces } = storeToRefs(useImagesStore());
 
@@ -8,7 +9,6 @@ interface Props {
   item: ImagePieces;
   isHighlight: boolean;
   imgSrc: string;
-  widthGame: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,7 +54,7 @@ const onDrop = (
     @dragenter="onDragEnter($event, item.position)"
     :key="item.position"
     :class="isHighlight && 'opacity-50'"
-    class="cursor-grab"
+    class="cursor-grab hover:opacity-80"
   >
     <div
       draggable="true"
@@ -65,7 +65,7 @@ const onDrop = (
         width: item.width,
         height: item.height,
         backgroundImage: `url(${imgSrc})`,
-        backgroundSize: `${widthGame}px auto`,
+        backgroundSize: `${WIDTH_GAME}px auto`,
       }"
     />
   </div>
