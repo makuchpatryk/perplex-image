@@ -28,7 +28,7 @@ export const useImagesStore = defineStore({
       );
       this.photos = data.photos;
 
-      this.setSelectedImage(data.photos[0]);
+      this.setSelectedImage(data.photos[3]);
     },
     async getImage(options: { id: any }) {
       const image = await $fetch<PexelPhoto>(

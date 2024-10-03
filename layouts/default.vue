@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gray-50 h-lvh overflow-hidden p-4 bg-gradient-to-r from-[#FBFBFB] from-10% via-[#FBFBFB] via-50% to-[#999896] to-100%"
+    class="bg-gray-50 h-lvh overflow-hidden p-4 bg-gradient-to-r from-[#FBFBFB] from-10% via-[#FBFBFB] via-30% to-[#999896] to-100%"
   >
     <nav class="flex pb-2">
       <img src="/assets/logo.svg" />
