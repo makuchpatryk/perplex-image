@@ -20,7 +20,9 @@ export const useImagesStore = defineStore({
       this.shuffledPieces = shuffledPieces;
     },
     setSelectedImage(image: PexelPhoto) {
-      this.selectedImage = image;
+      return Promise.resolve().then(() => {
+        this.selectedImage = image;
+      });
     },
     async getImages() {
       const data = await $fetch<ResponsePexel>(

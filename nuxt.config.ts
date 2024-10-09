@@ -8,12 +8,18 @@ export default defineNuxtConfig({
       meta: [{ name: "description", content: "Perplex Image" }],
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "nuxt-icon"],
-  plugins: [{ src: "~/plugins/directive", mode: "all" }],
+  modules: ["@vueuse/nuxt", "@nuxtjs/tailwindcss", "@pinia/nuxt", "nuxt-icon"],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
+    },
+  },
+  vite: {
+    server: {
+      hmr: {
+        clientPort: 3000,
+      },
     },
   },
 });
