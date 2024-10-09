@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import { vOnClickOutside } from "@vueuse/components";
 const props = defineProps({
   isOpen: Boolean,
 });
@@ -11,51 +12,31 @@ const onClickOutside = () => {
 </script>
 
 <template>
-  <div>
-    <Teleport to="body">
-      <div v-if="isOpen" class="modal-mask">
-        <div class="modal-wrapper">
-          <div class="modal-container" v-click-outside="onClickOutside">
-            <div class="modal-header">
-              <slot name="header"> default header </slot>
-            </div>
-            <div class="modal-body">
-              <slot name="content"> default content </slot>
-            </div>
-            <div class="modal-footer">
-              <slot name="footer">
-                <div>
-                  <button
-                    class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
-                    @click.stop="emit('modal-close')"
-                    v-text="Submit"
-                  />
-                </div>
-              </slot>
-            </div>
+  <Teleport to="body">
+    <div v-if="isOpen" class="fixed top-0 left-0 w-full h-full z-50">
+      <div
+        class="w-[1200px] h-[820px] absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] bg-[#DDDDDDEE] rounded-[40px] backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A] p-10"
+      >
+        <div class="h-full w-full" v-on-click-outside="onClickOutside">
+          <div>
+            <slot name="header"></slot>
+          </div>
+          <div class="h-full w-full">
+            <slot name="content"> default content </slot>
+          </div>
+          <div>
+            <slot name="footer">
+              <div>
+                <button
+                  class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
+                  @click.stop="emit('modal-close')"
+                  v-text="'Submit'"
+                />
+              </div>
+            </slot>
           </div>
         </div>
       </div>
-    </Teleport>
-  </div>
+    </div>
+  </Teleport>
 </template>
-
-<style scoped>
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.modal-container {
-  width: 300px;
-  margin: 150px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-}
-</style>

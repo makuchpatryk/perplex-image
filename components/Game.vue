@@ -2,6 +2,7 @@
 import { useImagesStore } from "../stores/images";
 import { storeToRefs } from "pinia";
 import { WIDTH_GAME } from "../constants";
+import type { ImagePieces } from "~/types";
 
 interface Props {
   level: string;
@@ -11,17 +12,17 @@ const props = withDefaults(defineProps<Props>(), {
   level: "1",
 });
 
-const { seletedImage, images } = storeToRefs(useImagesStore());
+const { selectedImage, photos } = storeToRefs(useImagesStore());
 const { shuffle, imageToBase64 } = await useImage();
 
 const {
   height,
   width,
   src: { large: url },
-} = seletedImage.value;
+} = selectedImage.value;
 
 let isModalOpened = ref<boolean>(false);
-let shuffledPieces = ref<ImagePieces[]>([]);
+let shuffledPieces = ref<ImagePieces>([]);
 let highlight = ref<number | string>("");
 let imgSrc = ref<string | ArrayBuffer | null>("");
 

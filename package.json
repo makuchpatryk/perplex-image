@@ -20,6 +20,8 @@
     "@typescript-eslint/parser": "^5.47.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.2.6",
+    "@vueuse/components": "^11.1.0",
+    "@vueuse/nuxt": "^11.1.0",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -33,7 +35,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
-    "@vueuse/core": "^10.7.2",
+    "@vueuse/core": "^11.1.0",
     "pinia": "^2.1.7",
     "uuid": "^9.0.1",
     "vue": "^3.4.15"

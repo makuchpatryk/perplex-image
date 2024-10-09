@@ -6,9 +6,9 @@ interface Props {
 
 const props = defineProps<Props>();
 let trigger = ref<boolean>(false);
-const $el = ref(null);
-const activator = ref(null);
-const dropdownStyle = ref(null);
+const $el = ref();
+const activator = ref();
+const dropdownStyle = ref();
 
 const emit = defineEmits(["input"]);
 

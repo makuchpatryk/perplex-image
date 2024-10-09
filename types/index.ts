@@ -10,6 +10,7 @@ export interface PexelPhoto {
   alt: string;
   avg_color: string;
   height: number;
+  width: string;
   id: number;
   liked: boolean;
   photographer: string;
