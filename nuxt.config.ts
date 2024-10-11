@@ -8,12 +8,35 @@ export default defineNuxtConfig({
       meta: [{ name: "description", content: "Perplex Image" }],
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "nuxt-icon"],
-  plugins: [{ src: "~/plugins/directive", mode: "all" }],
+  modules: ["@vueuse/nuxt", "@nuxtjs/tailwindcss", "@pinia/nuxt", "nuxt-icon"],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
+    },
+  },
+  tailwindcss: {
+    config: {
+      theme: {
+        extend: {
+          animation: {
+            moving: "moving 5s ease infinite",
+          },
+        },
+        keyframes: {
+          moving: {
+            "0%, 100%": { backgroundPosition: "0% 50%" },
+            "50%": { backgroundPosition: "100% 50%" },
+          },
+        },
+      },
+    },
+  },
+  vite: {
+    server: {
+      hmr: {
+        clientPort: 3000,
+      },
     },
   },
 });

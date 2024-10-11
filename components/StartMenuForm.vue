@@ -1,30 +1,37 @@
 <script setup lang="ts">
+import { Options } from "~/constants";
 import { useImagesStore } from "../stores/images";
 import { storeToRefs } from "pinia";
 
 const { photos, selectedImage } = storeToRefs(useImagesStore());
+const { setSelectedImage } = useImagesStore();
 
-let id = ref<string | number>();
-let level = ref<string | number>(5);
+const selectOption = ref<Options>(Options.EASY);
+const listOption = Object.values(Options);
+const isSelectImageOpened = ref(false);
 
 const beginGame = async () => {
   await navigateTo({
-    path: `/game/${id.value}`,
+    path: `/game/${selectedImage.value.id}`,
     query: {
-      level: level.value,
+      level: selectOption.value,
     },
   });
 };
 
-const onSelectImage = (option: { value: string | number }) => {
-  id.value = option.value;
-};
-const onSelectLevel = (option: { value: string | number }) => {
-  level.value = option.value;
+const onChangeRadio = (e: Event) => {
+  selectOption.value = (e.target as HTMLInputElement).value as Options;
 };
 
-const optionsImages = photos.value.map((i) => i.id);
-const optionsLevels = ["5", "10", "15", "20", "25", "30"];
+const onSelectImage = (data: any) => {
+  setSelectedImage(data).then(() => {
+    onCloseImage();
+  });
+};
+
+const onCloseImage = () => {
+  isSelectImageOpened.value = false;
+};
 </script>
 
 <template>
@@ -43,62 +50,62 @@ const optionsLevels = ["5", "10", "15", "20", "25", "30"];
       />
       <span v-else class="block w-[700px] h-[466px]"></span>
       <div
-        class="w-full absolute left-[50%] translate-x-[-50%] top-5 flex flex-col items-center"
+        class="w-full absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] flex flex-col items-center justify-center"
       >
-        <button
-          class="w-[200px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
-          type="button"
-          @click="() => {}"
-        >
-          Shuffle picture
-        </button>
-        <button
-          class="w-[200px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
-          type="button"
-          @click="beginGame"
-        >
+        <UiButton class="mt-5" @click="() => {}">
+          <p class="pt-[4px]">Shuffle picture</p>
+          <Icon
+            class="ml-2 text-[36px] rotate-90"
+            name="heroicons:arrow-path-rounded-square"
+          />
+        </UiButton>
+        <UiButton class="mt-5" @click="() => (isSelectImageOpened = true)">
           Choose manually
-        </button>
-        <div class="center-align">
-          <input type="radio" name="size" id="size_1" value="small" checked />
-          <label for="size_1">9x13</label>
-
-          <input type="radio" name="size" id="size_2" value="small" />
-          <label for="size_2">15x23</label>
-
-          <input type="radio" name="size" id="size_3" value="small" />
-          <label for="size_3">18x26</label>
+        </UiButton>
+        <div class="flex flex-row mt-7 gap-[30px]">
+          <span v-for="(option, key) in listOption" :key="option">
+            <input
+              :class="[
+                'invisible w-0 h-0',
+                key === 0 && 'peer/0',
+                key === 1 && 'peer/1',
+                key === 2 && 'peer/2',
+              ]"
+              type="radio"
+              name="size"
+              :id="option"
+              :value="option"
+              :checked="selectOption === option"
+              @change="(e) => onChangeRadio(e)"
+            />
+            <label
+              :class="[
+                'cursor-pointer bg-[#FFFFFF66] rounded-[20px] backdrop-blur-[15%] shadow-[0px_4px_4px_0px_#00000040] text-1xl font-normal text-[#303030] hover:bg-[#FFFFFFB2] active:bg-[#FFFFFFB2] px-[12px] pb-[9px] pt-[12px] flex items-center',
+                'transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-200',
+                key === 0 && 'peer-checked/0:bg-[#FFFFFFB2]',
+                key === 1 && 'peer-checked/1:bg-[#FFFFFFB2]',
+                key === 2 && 'peer-checked/2:bg-[#FFFFFFB2]',
+              ]"
+              :for="option"
+            >
+              {{ option }}
+            </label>
+          </span>
         </div>
       </div>
     </div>
-    <button
-      class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
-      type="button"
+    <SelectImageModal
+      :isModalOpened="isSelectImageOpened"
+      :photos="photos"
+      @submit="onSelectImage"
+      @close="onCloseImage"
+    />
+    <UiButton
+      class="mt-10 text-[48px] w-[208px] h-[77px] justify-center"
       @click="beginGame"
+      >Play</UiButton
     >
-      PLAY
-    </button>
   </div>
 </template>
 
-<style lang="css">
-input[type="radio"] {
-  visibility: hidden;
-  height: 0;
-  width: 0;
-}
-
-label {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  cursor: pointer;
-  background-color: #454545;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 3px;
-}
-input[type="radio"]:checked + label {
-  background-color: #58ba83;
-}
-</style>
+<style lang="css"></style>
