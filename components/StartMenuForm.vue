@@ -52,24 +52,16 @@ const onCloseImage = () => {
       <div
         class="w-full absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] flex flex-col items-center justify-center"
       >
-        <button
-          class="bg-[#FFFFFF66] rounded-[20px] backdrop-blur-[15%] shadow-[0px_4px_4px_0px_#00000040] text-3xl font-normal text-[#303030] hover:bg-[#FFFFFFB2] active:bg-[#FFFFFFB2] px-[12px] py-[9px] flex items-center"
-          type="button"
-          @click="() => {}"
-        >
+        <UiButton class="mt-5" @click="() => {}">
           <p class="pt-[4px]">Shuffle picture</p>
           <Icon
             class="ml-2 text-[36px] rotate-90"
             name="heroicons:arrow-path-rounded-square"
           />
-        </button>
-        <button
-          class="bg-[#FFFFFF66] rounded-[20px] backdrop-blur-[15%] shadow-[0px_4px_4px_0px_#00000040] text-2xl font-normal text-[#303030] hover:bg-[#FFFFFFB2] active:bg-[#FFFFFFB2] px-[12px] py-[9px] flex items-center mt-5"
-          type="button"
-          @click="() => (isSelectImageOpened = true)"
-        >
+        </UiButton>
+        <UiButton class="mt-5" @click="() => (isSelectImageOpened = true)">
           Choose manually
-        </button>
+        </UiButton>
         <div class="flex flex-row mt-7 gap-[30px]">
           <span v-for="(option, key) in listOption" :key="option">
             <input
@@ -89,6 +81,7 @@ const onCloseImage = () => {
             <label
               :class="[
                 'cursor-pointer bg-[#FFFFFF66] rounded-[20px] backdrop-blur-[15%] shadow-[0px_4px_4px_0px_#00000040] text-1xl font-normal text-[#303030] hover:bg-[#FFFFFFB2] active:bg-[#FFFFFFB2] px-[12px] pb-[9px] pt-[12px] flex items-center',
+                'transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-200',
                 key === 0 && 'peer-checked/0:bg-[#FFFFFFB2]',
                 key === 1 && 'peer-checked/1:bg-[#FFFFFFB2]',
                 key === 2 && 'peer-checked/2:bg-[#FFFFFFB2]',
@@ -107,13 +100,11 @@ const onCloseImage = () => {
       @submit="onSelectImage"
       @close="onCloseImage"
     />
-    <button
-      class="mt-7 block w-[158px] text-center bg-[#FFFFFF66] rounded-[20px] backdrop-blur-[15%] shadow-[6px_6px_12.5px_0px_#00000026] text-3xl font-normal text-[#303030] hover:bg-[#FFFFFFB2] active:bg-[#FFFFFFB2] px-[12px] py-[9px]"
-      type="button"
+    <UiButton
+      class="mt-10 text-[48px] w-[208px] h-[77px] justify-center"
       @click="beginGame"
+      >Play</UiButton
     >
-      Play
-    </button>
   </div>
 </template>
 

@@ -1,6 +1,9 @@
 <template>
   <div
-    class="bg-gray-50 h-lvh overflow-hidden p-4 bg-gradient-to-r from-[#FBFBFB] from-10% via-[#FBFBFB] via-30% to-[#999896] to-100%"
+    :class="[
+      'h-lvh overflow-hidden p-4',
+      'bg-[length:200%] animate-moving bg-gradient-to-r from-[#FBFBFB] to-[#bfbfbf]',
+    ]"
   >
     <nav class="flex pb-2">
       <img src="/assets/logo.svg" />

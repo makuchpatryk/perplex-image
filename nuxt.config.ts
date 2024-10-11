@@ -15,6 +15,23 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  tailwindcss: {
+    config: {
+      theme: {
+        extend: {
+          animation: {
+            moving: "moving 5s ease infinite",
+          },
+        },
+        keyframes: {
+          moving: {
+            "0%, 100%": { backgroundPosition: "0% 50%" },
+            "50%": { backgroundPosition: "100% 50%" },
+          },
+        },
+      },
+    },
+  },
   vite: {
     server: {
       hmr: {
