@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { Options } from "~/constants";
-import { useImagesStore } from "../stores/images";
 import { storeToRefs } from "pinia";
+import { useImagesStore } from "~/modules/core/store/images";
+import { Options } from "~/modules/core/constants";
 
 const { photos, selectedImage } = storeToRefs(useImagesStore());
-const { setSelectedImage } = useImagesStore();
+const { setSelectedImage, randomSelectImage, getImages } = useImagesStore();
 
 const selectOption = ref<Options>(Options.EASY);
 const listOption = Object.values(Options);
 const isSelectImageOpened = ref(false);
+const loading = ref(true);
 
 const beginGame = async () => {
-  await navigateTo({
-    path: `/game/${selectedImage.value.id}`,
-    query: {
-      level: selectOption.value,
-    },
-  });
+  if (selectedImage?.value) {
+    await navigateTo({
+      path: `/game/${selectedImage.value.id}`,
+      query: {
+        level: selectOption.value,
+      },
+    });
+  }
 };
 
 const onChangeRadio = (e: Event) => {
@@ -32,10 +35,16 @@ const onSelectImage = (data: any) => {
 const onCloseImage = () => {
   isSelectImageOpened.value = false;
 };
+
+onMounted(() => {
+  getImages().then(() => {
+    loading.value = false;
+  });
+});
 </script>
 
 <template>
-  <div class="items-center flex mx-auto w-[700px] flex-col mt-[150px]">
+  <div class="justify-center items-center flex mx-auto w-[700px] flex-col">
     <span class="text-3xl font-semibold text-center text-[#605F5B] mb-5"
       >A tile-sliding picture game.</span
     >
@@ -44,22 +53,34 @@ const onCloseImage = () => {
     >
     <div class="relative">
       <img
-        v-if="selectedImage?.src?.large"
+        v-if="!loading && selectedImage?.src?.large"
         class="w-full shadow-[10px_12px_25px_2px_#00000026]"
         :src="selectedImage?.src?.large || ''"
       />
-      <span v-else class="block w-[700px] h-[466px]"></span>
+      <span
+        v-else
+        class="block w-[700px] h-[466px] bg-[length:400%] animate-moving bg-gradient-to-r from-[#777777] to-[#bbbbbb]"
+      ></span>
       <div
         class="w-full absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] flex flex-col items-center justify-center"
       >
-        <UiButton class="mt-5" @click="() => {}">
+        <UiButton
+          class="mt-5"
+          @click="
+            () => {
+              loading = true;
+              randomSelectImage();
+              loading = false;
+            }
+          "
+        >
           <p class="pt-[4px]">Shuffle picture</p>
           <Icon
             class="ml-2 text-[36px] rotate-90"
             name="heroicons:arrow-path-rounded-square"
           />
         </UiButton>
-        <UiButton class="mt-5" @click="() => (isSelectImageOpened = true)">
+        <UiButton class="mt-5" @click="isSelectImageOpened = true">
           Choose manually
         </UiButton>
         <div class="flex flex-row mt-7 gap-[30px]">
@@ -76,7 +97,7 @@ const onCloseImage = () => {
               :id="option"
               :value="option"
               :checked="selectOption === option"
-              @change="(e) => onChangeRadio(e)"
+              @change="onChangeRadio($event)"
             />
             <label
               :class="[
@@ -107,5 +128,3 @@ const onCloseImage = () => {
     >
   </div>
 </template>
-
-<style lang="css"></style>

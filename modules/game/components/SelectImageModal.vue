@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PexelPhoto } from "~/types";
+import type { PexelPhoto } from "~/modules/core/types";
 
 interface Props {
   isModalOpened: boolean;
@@ -21,7 +21,7 @@ const onClick = (data: any) => {
 </script>
 
 <template>
-  <Modal :isOpen="isModalOpened" @modal-close="onCloseModal">
+  <UiModal :isOpen="isModalOpened" @modal-close="onCloseModal">
     <template #content>
       <div
         class="h-full overflow-auto p-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[linear-gradient(180deg,_#ffffff_0%,_#999999_100%)]"
@@ -30,7 +30,7 @@ const onClick = (data: any) => {
           <div
             v-for="photo in photos"
             :key="photo.id"
-            class="flex-[1_0_21%] cursor-pointer transition ease-in-out delay-50 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-200"
+            class="flex-[1_0_21%] cursor-pointer transition ease-in-out delay-50 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-200 max-h-[160px]"
             @click="onClick(photo)"
           >
             <img
@@ -44,5 +44,5 @@ const onClick = (data: any) => {
     <template #footer>
       <span></span>
     </template>
-  </Modal>
+  </UiModal>
 </template>

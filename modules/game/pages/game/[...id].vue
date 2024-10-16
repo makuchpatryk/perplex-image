@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useImagesStore } from "~/modules/core/store/images";
+
 const route = useRoute();
-import { useImagesStore } from "../../stores/images";
 
 const { getImage } = useImagesStore();
 

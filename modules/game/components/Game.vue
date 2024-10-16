@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useImagesStore } from "../stores/images";
 import { storeToRefs } from "pinia";
-import { WIDTH_GAME } from "../constants";
-import type { ImagePieces } from "~/types";
+import { WIDTH_GAME } from "../../core/constants";
+import type { ImagePieces } from "~/modules/core/types";
+import { useImagesStore } from "~/modules/core/store/images";
 
 interface Props {
   level: string;
