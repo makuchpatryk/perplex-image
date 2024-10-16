@@ -1,16 +1,20 @@
 import { defineStore } from "pinia";
-import type { ImagePieces, PexelPhoto, ResponsePexel } from "~/types";
+import type {
+  ImagePieces,
+  PexelPhoto,
+  ResponsePexel,
+} from "~/modules/core/types";
 
 interface State {
   shuffledPieces: ImagePieces[];
   photos: PexelPhoto[];
-  selectedImage: PexelPhoto;
+  selectedImage?: PexelPhoto;
 }
 
 export const useImagesStore = defineStore({
   id: "images",
   state: (): State => ({
-    selectedImage: {} as PexelPhoto,
+    selectedImage: void 0,
     photos: [],
     shuffledPieces: [],
   }),
@@ -19,14 +23,20 @@ export const useImagesStore = defineStore({
     setShuffledPieces(shuffledPieces: ImagePieces[]) {
       this.shuffledPieces = shuffledPieces;
     },
-    setSelectedImage(image: PexelPhoto) {
+    randomSelectImage() {
+      return Promise.resolve(
+        (this.selectedImage =
+          this.photos[Math.round(Math.random() * this.photos.length)])
+      );
+    },
+    async setSelectedImage(image: PexelPhoto) {
       return Promise.resolve().then(() => {
         this.selectedImage = image;
       });
     },
     async getImages() {
       const data = await $fetch<ResponsePexel>(
-        `/api/get-images/?per_page=${20}`
+        `/api/get-images/?per_page=${100}`
       );
       this.photos = data.photos;
 

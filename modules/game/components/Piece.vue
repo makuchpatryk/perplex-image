@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useImagesStore } from "../stores/images";
-import { WIDTH_GAME } from "../constants";
+import { WIDTH_GAME } from "../../core/constants";
+import type { ImagePieces } from "~/modules/core/types";
+import { useImagesStore } from "~/modules/core/store/images";
 
 const { shuffledPieces } = storeToRefs(useImagesStore());
 

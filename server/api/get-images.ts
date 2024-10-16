@@ -1,4 +1,4 @@
-import { ResponsePexel } from "~/types";
+import { ResponsePexel } from "~/modules/core/types";
 
 export default defineEventHandler(async (event) => {
   const { per_page } = getQuery(event);
