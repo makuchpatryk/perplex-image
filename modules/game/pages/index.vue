@@ -45,12 +45,12 @@ onMounted(() => {
 
 <template>
   <div class="justify-center items-center flex mx-auto w-[700px] flex-col">
-    <span class="text-3xl font-semibold text-center text-[#605F5B] mb-5"
-      >A tile-sliding picture game.</span
-    >
-    <span class="text-2xl font-light text-center text-[#605F5B] mb-10"
-      >Rearrange tiles by dragging to put the image together.</span
-    >
+    <span class="text-3xl font-semibold text-center text-[#605F5B] mb-5">{{
+      $t("A tile-sliding picture game.")
+    }}</span>
+    <span class="text-2xl font-light text-center text-[#605F5B] mb-10">{{
+      $t("Rearrange tiles by dragging to put the image together.")
+    }}</span>
     <div class="relative">
       <img
         v-if="!loading && selectedImage?.src?.large"
@@ -74,14 +74,14 @@ onMounted(() => {
             }
           "
         >
-          <p class="pt-[4px]">Shuffle picture</p>
+          <p class="pt-[4px]">{{ $t("Shuffle picture") }}</p>
           <Icon
             class="ml-2 text-[36px] rotate-90"
             name="heroicons:arrow-path-rounded-square"
           />
         </UiButton>
         <UiButton class="mt-5" @click="isSelectImageOpened = true">
-          Choose manually
+          {{ $t("Choose manually") }}
         </UiButton>
         <div class="flex flex-row mt-7 gap-[30px]">
           <span v-for="(option, key) in listOption" :key="option">
@@ -124,7 +124,7 @@ onMounted(() => {
     <UiButton
       class="mt-10 text-[48px] w-[208px] h-[77px] justify-center"
       @click="beginGame"
-      >Play</UiButton
+      >{{ $t("Play") }}</UiButton
     >
   </div>
 </template>

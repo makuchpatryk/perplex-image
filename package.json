@@ -34,6 +34,7 @@
     "vitest": "^0.26.2"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^8.5.5",
     "@pinia/nuxt": "^0.4.6",
     "@vueuse/core": "^11.1.0",
     "pinia": "^2.1.7",
