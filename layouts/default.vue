@@ -6,7 +6,9 @@
     ]"
   >
     <nav class="flex pb-2">
-      <img src="/assets/logo.svg" />
+      <NuxtLink to="/">
+        <img src="/assets/logo.svg" />
+      </NuxtLink>
     </nav>
     <div class="flex w-full h-screen">
       <slot />
