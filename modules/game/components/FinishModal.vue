@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import type { Levels } from "~/modules/core/constants";
+
 interface Props {
   isModalOpened: boolean;
   time: string;
-  level: string;
+  level: Levels;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   isModalOpened: false,
   time: "",
-  level: "",
+  level: "9x13" as unknown as Levels,
 });
 const emit = defineEmits(["submit", "close"]);
 
@@ -21,7 +23,7 @@ const submitHandler = () => {
 </script>
 
 <template>
-  <Modal
+  <UiModal
     :isOpen="isModalOpened"
     @modal-close="closeModal"
     @submit="submitHandler"
@@ -37,5 +39,5 @@ const submitHandler = () => {
         <p v-text="level"></p>
       </span>
     </template>
-  </Modal>
+  </UiModal>
 </template>

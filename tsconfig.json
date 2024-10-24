@@ -3,6 +3,7 @@
   "extends": "./.nuxt/tsconfig.json",
   "includes": ["types/*.d.ts"],
   "compilerOptions": {
+    "lib": ["es5", "es6", "dom", "dom.iterable"],
     "esModuleInterop": true,
     "paths": {
       "~/*": ["./*"],

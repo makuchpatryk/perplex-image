@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useImagesStore } from "~/modules/core/store/images";
-import { Options } from "~/modules/core/constants";
+import { Levels, LevelsKeys } from "~/modules/core/constants";
 
 const { photos, selectedImage } = storeToRefs(useImagesStore());
 const { setSelectedImage, randomSelectImage, getImages } = useImagesStore();
 
-const selectOption = ref<Options>(Options.EASY);
-const listOption = Object.values(Options);
+const selectOption = ref<Levels>(Levels["9x13"]);
+const listOption = Object.values(`${LevelsKeys}`);
 const isSelectImageOpened = ref(false);
 const loading = ref(true);
 
@@ -23,7 +23,8 @@ const beginGame = async () => {
 };
 
 const onChangeRadio = (e: Event) => {
-  selectOption.value = (e.target as HTMLInputElement).value as Options;
+  selectOption.value = (e.target as HTMLInputElement)
+    .value as unknown as Levels;
 };
 
 const onSelectImage = (data: any) => {
@@ -94,7 +95,7 @@ onMounted(() => {
               ]"
               type="radio"
               name="size"
-              :id="option"
+              :id="String(option)"
               :value="option"
               :checked="selectOption === option"
               @change="onChangeRadio($event)"
@@ -107,7 +108,7 @@ onMounted(() => {
                 key === 1 && 'peer-checked/1:bg-[#FFFFFFB2]',
                 key === 2 && 'peer-checked/2:bg-[#FFFFFFB2]',
               ]"
-              :for="option"
+              :for="option as string"
             >
               {{ option }}
             </label>

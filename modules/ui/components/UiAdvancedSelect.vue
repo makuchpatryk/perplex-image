@@ -34,7 +34,6 @@ const onClickOption = (option: T) => {
   });
 };
 const closeDropdown = () => {
-  console.log("closeDropdown");
   trigger.value = false;
 };
 
