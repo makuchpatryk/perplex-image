@@ -9,6 +9,10 @@ export default defineI18nConfig(() => ({
       "Shuffle picture": "Shuffle picture",
       "Choose manually": "Choose manually",
       Play: "Play",
+      RESTART: "RESTART",
+      PAUSE: "PAUSE",
+      Move: "Move",
+      Continue: "Continue",
     },
   },
 }));

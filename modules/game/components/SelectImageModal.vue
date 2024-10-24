@@ -15,7 +15,7 @@ const emit = defineEmits(["submit", "close"]);
 const onCloseModal = () => {
   emit("close");
 };
-const onClick = (data: any) => {
+const onClick = (data: PexelPhoto) => {
   emit("submit", data);
 };
 </script>

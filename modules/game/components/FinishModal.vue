@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import type { Levels, LevelsKeys } from "~/modules/core/constants";
+
 interface Props {
   isModalOpened: boolean;
+  moves: number;
   time: string;
-  level: string;
+  level: LevelsKeys;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   isModalOpened: false,
   time: "",
-  level: "",
+  moves: 0,
+  level: "9x13" as LevelsKeys,
 });
 const emit = defineEmits(["submit", "close"]);
 
@@ -21,21 +25,30 @@ const submitHandler = () => {
 </script>
 
 <template>
-  <Modal
+  <UiModal
     :isOpen="isModalOpened"
     @modal-close="closeModal"
     @submit="submitHandler"
   >
-    <template #header>Summary</template>
     <template #content>
-      <span>
-        <h2>Time</h2>
-        <p v-text="time"></p>
-      </span>
-      <span>
-        <h2>Level</h2>
-        <p v-text="level"></p>
-      </span>
+      <div class="h-full flex flex-col items-center justify-center">
+        <div class="text-7xl mb-6">Pause</div>
+        <div class="mt-4 mb-6">
+          <div class="flex justify-between w-[200px]">
+            <h2 class="font-semibold">Time</h2>
+            <p v-text="time"></p>
+          </div>
+          <div class="flex justify-between w-[200px]">
+            <h2 class="font-semibold">Level</h2>
+            <p v-text="level"></p>
+          </div>
+          <div class="flex justify-between w-[200px]">
+            <h2 class="font-semibold">Moves</h2>
+            <p v-text="moves"></p>
+          </div>
+        </div>
+        <UiButton @click.stop="submitHandler" v-text="$t('Back to menu')" />
+      </div>
     </template>
-  </Modal>
+  </UiModal>
 </template>
