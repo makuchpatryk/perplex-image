@@ -12,7 +12,7 @@ interface Props {
   imgSrc: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   isHighlight: false,
 });
 
@@ -55,7 +55,7 @@ const onDrop = (
     @dragenter="onDragEnter($event, item.position)"
     :key="item.position"
     :class="isHighlight && 'opacity-50'"
-    class="cursor-grab hover:opacity-80"
+    class="cursor-grab hover:opacity-80 m-[1px]"
   >
     <div
       draggable="true"

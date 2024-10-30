@@ -20,6 +20,9 @@ export default defineNuxtModule({
       dirs.push({
         path: join(__dirname, "components"),
       });
+      dirs.push({
+        path: join(__dirname, "views"),
+      });
     });
 
     // Auto register composables
@@ -36,7 +39,7 @@ export default defineNuxtModule({
       });
       pages.push({
         name: "game",
-        path: "/game/:id'",
+        path: "/game/:id",
         file: resolve(__dirname, "./pages/game/[...id].vue"),
       });
     });

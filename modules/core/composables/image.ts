@@ -8,7 +8,7 @@ export async function useImage() {
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
         const base64String = reader.result;
-  
+
         callback(base64String);
       };
     });
@@ -17,20 +17,20 @@ export async function useImage() {
   const shuffle = (array) => {
     let currentIndex = array.length,
       randomIndex;
-  
+
     while (currentIndex > 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-  
+
       // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex],
         array[currentIndex],
       ];
     }
-  
+
     return array;
   };
 
-  return { shuffle, imageToBase64 }
+  return { shuffle, imageToBase64 };
 }
