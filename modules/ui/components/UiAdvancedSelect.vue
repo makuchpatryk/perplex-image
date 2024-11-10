@@ -1,11 +1,13 @@
 <script setup lang="ts" generic="T">
+import type { TODO } from "~/modules/core/types";
+
 interface Props {
   value?: T | null;
   options: T[];
 }
 
 const props = defineProps<Props>();
-let trigger = ref<boolean>(false);
+const trigger = ref<boolean>(false);
 const $el = ref();
 const activator = ref();
 const dropdownStyle = ref();
@@ -41,7 +43,7 @@ const calculationDropdown = () => {
   const { top, height, width, left, right } =
     activator.value.getBoundingClientRect();
 
-  const payload: { [k: string]: any } = {
+  const payload: { [k: string]: TODO } = {
     top: `${top + height}px`,
     minWidth: `${width}px`,
     maxWidth: `${width * 1.5}px`,

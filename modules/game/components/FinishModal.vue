@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Levels, LevelsKeys } from "~/modules/core/constants";
+import type { LevelsKeys } from "~/modules/core/constants";
 
 interface Props {
   isModalOpened: boolean;
@@ -47,7 +47,9 @@ const submitHandler = () => {
             <p v-text="moves"></p>
           </div>
         </div>
-        <UiButton @click.stop="submitHandler" v-text="$t('Back to menu')" />
+        <UiButton @click.stop="submitHandler">
+          {{ $t("Back to menu") }}
+        </UiButton>
       </div>
     </template>
   </UiModal>

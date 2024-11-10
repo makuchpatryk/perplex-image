@@ -1,6 +1,7 @@
 import { defineNuxtModule } from "@nuxt/kit";
 import { resolve, join } from "path";
 import type { Nuxt } from "@nuxt/schema";
+import type { TODO } from "../core/types";
 
 export default defineNuxtModule({
   meta: {
@@ -14,9 +15,9 @@ export default defineNuxtModule({
       nuxt: "^3.9.0",
     },
   },
-  setup(options: any, nuxt: Nuxt) {
+  setup(options: TODO, nuxt: Nuxt) {
     // Auto register components
-    nuxt.hook("components:dirs", (dirs) => {
+    nuxt.hook("components:dirs", (dirs: TODO) => {
       dirs.push({
         path: join(__dirname, "components"),
       });
@@ -26,12 +27,12 @@ export default defineNuxtModule({
     });
 
     // Auto register composables
-    nuxt.hook("imports:dirs", (dirs) => {
+    nuxt.hook("imports:dirs", (dirs: TODO) => {
       dirs.push(resolve(__dirname, "./composables"));
     });
 
     // Auto register pages
-    nuxt.hook("pages:extend", (pages) => {
+    nuxt.hook("pages:extend", (pages: TODO) => {
       pages.push({
         name: "index",
         path: "/",

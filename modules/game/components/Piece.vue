@@ -4,7 +4,7 @@ import { WIDTH_GAME } from "../../core/constants";
 import type { ImagePieces } from "~/modules/core/types";
 import { useImagesStore } from "~/modules/core/store/images";
 
-const { shuffledPieces } = storeToRefs(useImagesStore());
+storeToRefs(useImagesStore());
 
 interface Props {
   item: ImagePieces;

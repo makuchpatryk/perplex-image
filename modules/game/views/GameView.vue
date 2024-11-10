@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ImagePieces, PexelPhoto } from "~/modules/core/types";
-import { Levels, LevelsKeys, WIDTH_GAME } from "~/modules/core/constants";
+import { LevelsKeys, WIDTH_GAME } from "~/modules/core/constants";
 import { useI18n } from "vue-i18n";
 
 export interface GameProps {

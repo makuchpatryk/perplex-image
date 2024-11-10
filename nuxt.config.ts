@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "nuxt-icon",
     "@nuxtjs/i18n",
+    '@nuxt/eslint',
   ],
   postcss: {
     plugins: {
@@ -31,4 +32,7 @@ export default defineNuxtConfig({
       },
     },
   },
+  eslint: {
+    // options here
+  }
 });
