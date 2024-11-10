@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { Levels, LevelsKeys } from "~/modules/core/constants";
+import { LevelsKeys } from "~/modules/core/constants";
 import { useImagesStore } from "~/modules/core/store/images";
 import type { PexelPhoto } from "~/modules/core/types";
 

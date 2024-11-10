@@ -3,6 +3,7 @@ import type {
   ImagePieces,
   PexelPhoto,
   ResponsePexel,
+  TODO,
 } from "~/modules/core/types";
 
 interface State {
@@ -44,7 +45,7 @@ export const useImagesStore = defineStore({
         data.photos[Math.floor(Math.random() * data.photos.length)]
       );
     },
-    async getImage(options: { id: any }) {
+    async getImage(options: { id: TODO }) {
       const image = await $fetch<PexelPhoto>(
         `/api/get-image/?id=${options.id}`
       );

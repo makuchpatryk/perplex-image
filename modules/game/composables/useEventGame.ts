@@ -3,6 +3,7 @@ import type { GameData, GameProps } from "../views/GameView.vue";
 export interface Options {
   openModal: () => void;
 }
+console.log('ss')
 
 async function useEventGame(
   props: GameProps,

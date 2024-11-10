@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ResponsePexel {
   next_page: string;
   page: number;
@@ -35,3 +36,5 @@ export interface ImagePieces {
   width: string;
   height: string;
 }
+
+export type TODO = any;

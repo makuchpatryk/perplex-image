@@ -1,0 +1,5 @@
+.nuxt
+.output
+eslint.config.mjs
+nuxt.config.ts
+pnpm-lock.yaml
