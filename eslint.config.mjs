@@ -9,7 +9,8 @@ export default [
   ...vueTsEslintConfig(),
   {
     rules: {
-      'vue/multi-word-component-names': 'off'
+      'vue/multi-word-component-names': 'off',
+      'vue/no-unused-vars': 'off'
     },
   }
 ];
