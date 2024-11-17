@@ -3,8 +3,8 @@ import { ResponsePexel } from "~/modules/core/types";
 export default defineEventHandler(async (event) => {
   const { per_page } = getQuery(event);
   try {
-    const data = await $fetch<ResponsePexel>(
-      `https://api.pexels.com/v1/search?query=people&per_page=${per_page}`,
+    return await $fetch<ResponsePexel>(
+      `https://api.pexels.com/v1/collections/dyck2i1?per_page=${per_page}`,
       {
         headers: {
           Authorization:
@@ -12,8 +12,6 @@ export default defineEventHandler(async (event) => {
         },
       }
     );
-
-    return data;
   } catch (err) {
     console.error(err);
   }

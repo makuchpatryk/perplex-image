@@ -36,7 +36,7 @@ const onClick = (data: PexelPhoto) => {
             <img
               class="object-cover w-full h-full max-h-40"
               :src="photo.src.medium"
-            />
+             alt="Image"/>
           </div>
         </div>
       </div>
