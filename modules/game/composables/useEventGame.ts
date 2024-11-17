@@ -1,11 +1,12 @@
 import type { GameData, GameProps } from "../views/GameView.vue";
+import type { TODO } from "~core/types";
 
 export interface Options {
   openModal: () => void;
 }
 console.log('ss')
 
-async function useEventGame(
+export async function useEventGame(
   props: GameProps,
   data: GameData,
   { openModal }: Options
@@ -14,7 +15,7 @@ async function useEventGame(
     await useStopwatch();
 
   function checkIfIsCorrect() {
-    return data.shuffledPieces?.every((i, k) => {
+    return data.shuffledPieces?.every((i: TODO, k: TODO) => {
       return i.position === k;
     });
   }
@@ -34,14 +35,14 @@ async function useEventGame(
     positionCurrent: number | string;
   }) {
     const item1 = data.shuffledPieces?.find(
-      (item) => item.position == position
+      (item: TODO) => item.position == position
     );
     const item2 = data.shuffledPieces?.find(
-      (item) => item.position == positionCurrent
+      (item: TODO) => item.position == positionCurrent
     );
 
     if (item1 && item2) {
-      data.shuffledPieces = data.shuffledPieces?.map((i) => {
+      data.shuffledPieces = data.shuffledPieces?.map((i: TODO) => {
         if (i.position === item2.position) {
           return {
             ...item1,
@@ -75,5 +76,3 @@ async function useEventGame(
     onSwap,
   };
 }
-
-export { useEventGame };

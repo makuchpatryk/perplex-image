@@ -1,9 +1,11 @@
+import type { TODO } from "~core/types";
+
 export async function useImage() {
   const imageToBase64 = (
     url: string,
     callback: (a: string | ArrayBuffer | null) => void
   ) => {
-    $fetch(url).then((blob) => {
+    $fetch(url).then((blob: TODO) => {
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
@@ -14,7 +16,7 @@ export async function useImage() {
     });
   };
 
-  const shuffle = (array) => {
+  const shuffle = (array: TODO) => {
     let currentIndex = array.length,
       randomIndex;
 
