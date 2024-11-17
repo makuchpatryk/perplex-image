@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ResponsePexel {
-  next_page: string;
+  id: string;
+  media: PexelPhoto[];
   page: number;
   per_page: number;
-  photos: PexelPhoto[];
-  width: number;
   total_results: number;
+  prev_page?: string;
+  next_page?: string;
 }
+
 export interface PexelPhoto {
   alt: string;
   avg_color: string;
@@ -37,4 +38,5 @@ export interface ImagePieces {
   height: string;
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type TODO = any;

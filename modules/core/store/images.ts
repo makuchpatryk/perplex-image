@@ -24,7 +24,7 @@ export const useImagesStore = defineStore({
     setShuffledPieces(shuffledPieces: ImagePieces[]) {
       this.shuffledPieces = shuffledPieces;
     },
-    randomSelectImage() {
+    async randomSelectImage(): Promise<void> {
       return Promise.resolve(
         (this.selectedImage =
           this.photos[Math.round(Math.random() * this.photos.length)])
@@ -36,13 +36,13 @@ export const useImagesStore = defineStore({
       });
     },
     async getImages() {
-      const data = await $fetch<ResponsePexel>(
+      const { media } = await $fetch<ResponsePexel>(
         `/api/get-images/?per_page=${100}`
       );
-      this.photos = data.photos;
+      this.photos = media;
 
-      this.setSelectedImage(
-        data.photos[Math.floor(Math.random() * data.photos.length)]
+      await this.setSelectedImage(
+          media[Math.floor(Math.random() * media.length)]
       );
     },
     async getImage(options: { id: TODO }) {
@@ -50,7 +50,7 @@ export const useImagesStore = defineStore({
         `/api/get-image/?id=${options.id}`
       );
 
-      this.setSelectedImage(image);
+      await this.setSelectedImage(image);
     },
   },
 });

@@ -24,7 +24,7 @@ const onClickOutside = () => {
           <div>
             <slot name="header"></slot>
           </div>
-          <div class="w-full grow">
+          <div class="w-full grow overflow-hidden">
             <slot name="content"> default content </slot>
           </div>
           <div>
