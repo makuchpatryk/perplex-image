@@ -14,10 +14,10 @@
     "start": "nuxt start",
     "test": "vitest",
     "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
-    "**/*.{ts,vue}": "pnpm lint"
+    "modules/**/*.{ts,vue}": "pnpm lint"
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.6.1",
