@@ -103,11 +103,11 @@ onMounted(() => {
             />
             <label
               :class="[
-                'cursor-pointer bg-[#FFFFFF66] rounded-[20px] backdrop-blur-[15%] shadow-[0px_4px_4px_0px_#00000040] text-1xl font-normal text-[#303030] hover:bg-[#FFFFFFB2] active:bg-[#FFFFFFB2] px-[12px] pb-[9px] pt-[12px] flex items-center',
+                'cursor-pointer bg-[#FFFFFF66] rounded-[20px] backdrop-blur-[15%] shadow-[0px_4px_4px_0px_#00000040] text-1xl font-normal text-[#303030] hover:bg-[#FFFFFFEE] active:bg-[#FFFFFFEE] px-[12px] pb-[9px] pt-[12px] flex items-center',
                 'transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-200',
-                key === 0 && 'peer-checked/0:bg-[#FFFFFFB2]',
-                key === 1 && 'peer-checked/1:bg-[#FFFFFFB2]',
-                key === 2 && 'peer-checked/2:bg-[#FFFFFFB2]',
+                key === 0 && 'peer-checked/0:bg-[#FFFFFFEE]',
+                key === 1 && 'peer-checked/1:bg-[#FFFFFFEE]',
+                key === 2 && 'peer-checked/2:bg-[#FFFFFFEE]',
               ]"
               :for="option as string"
             >

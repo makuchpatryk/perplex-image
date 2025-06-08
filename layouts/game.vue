@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[
+      :class="[
       'h-lvh overflow-hidden p-4',
       'bg-[length:200%] animate-moving bg-gradient-to-r from-[#FBFBFB] to-[#bfbfbf]',
     ]"
@@ -10,7 +10,7 @@
         <img src="/assets/logo.svg" />
       </NuxtLink>
     </nav>
-    <div class="flex w-full h-full overflow-auto">
+    <div class="flex w-full h-screen overflow-auto">
       <slot />
     </div>
   </div>
@@ -23,3 +23,5 @@
   font-family: "League Spartan", sans-serif;
 }
 </style>
+<script setup lang="ts">
+</script>

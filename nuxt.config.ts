@@ -9,6 +9,7 @@ export default defineNuxtConfig({
       meta: [{ name: "description", content: "Perplex Image" }],
     },
   },
+
   modules: [
     "@vueuse/nuxt",
     "@nuxtjs/tailwindcss",
@@ -17,15 +18,18 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     '@nuxt/eslint',
   ],
+
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
+
   i18n: {
     vueI18n: "./i18n.config.ts",
   },
+
   vite: {
     server: {
       hmr: {
@@ -33,7 +37,10 @@ export default defineNuxtConfig({
       },
     },
   },
+
   eslint: {
     // options here
-  }
+  },
+
+  compatibilityDate: "2025-06-07"
 });
