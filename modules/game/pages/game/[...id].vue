@@ -6,6 +6,9 @@ const route = useRoute();
 const { getImage } = useImagesStore();
 getImage({ id: route.params.id });
 const { selectedImage } = storeToRefs(useImagesStore());
+definePageMeta({
+  layout: "game",
+});
 </script>
 
 <template>

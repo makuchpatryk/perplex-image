@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<GameProps>(), {
 });
 
 const { t } = useI18n();
+const enlargePreview = ref(false)
 
 const { imageToBase64 } = await useImage();
 
@@ -128,15 +129,17 @@ onMounted(() => {
     @submit="onSubmitHandler"
   />
   <div class="items-center flex mx-auto w-[700px] flex-col mt-10">
-    <div class="mb-10">
+    <div class="mb-10 h-[66px]">
       <img
-        :src="data.imgSrc"
-        width="245px"
-        class="backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]"
-      />
+          :src="data.imgSrc"
+          :class="['transition duration-300 ease-in-out cursor-pointer', enlargePreview ? 'scale-150' : 'w-[100px] backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]  hover:opacity-70']"
+          @click="() => {
+          enlargePreview = !enlargePreview;
+        }"
+       alt=""/>
     </div>
     <div
-      class="flex justify-start overflow-auto backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]"
+      :class="['flex justify-start backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]']"
     >
       <div
         :style="{
@@ -145,7 +148,7 @@ onMounted(() => {
         }"
       >
         <div
-          class="flex flex-wrap"
+          class="flex flex-wrap "
           :style="{
             minWidth: `${WIDTH_GAME}px`,
           }"
