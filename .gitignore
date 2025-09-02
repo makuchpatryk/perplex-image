@@ -13,6 +13,9 @@ node_modules
 logs
 *.log
 
+# IDEs
+.vscode/settings.json
+
 # Misc
 .DS_Store
 .fleet
