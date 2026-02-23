@@ -39,7 +39,7 @@ export const mockPhotosResponse = {
  * IMPORTANT: register the more-specific `get-image` route FIRST (lower priority)
  * and `get-images` LAST (higher priority), because Playwright's last-registered
  * route wins when multiple patterns match the same URL.
- * `*\/api\/get-image**` would otherwise also match `get-images` requests.
+ * `**\/api\/get-image**` would otherwise also match `get-images` requests.
  */
 export async function mockApiRoutes(page: Page) {
   // Lower priority – matches /api/get-image?id=... only when get-images does not match

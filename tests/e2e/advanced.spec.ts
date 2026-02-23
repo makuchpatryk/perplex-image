@@ -1,4 +1,4 @@
-import { test, expect, mockPhoto, mockPhotosResponse } from "./fixtures";
+import { test, expect, mockPhoto, mockApiRoutes } from "./fixtures";
 
 test.describe("Game page – layout", () => {
   test("displays puzzle pieces", async ({ gamePage }) => {
@@ -75,20 +75,7 @@ test.describe("Game page – restart", () => {
 
 test.describe("Game page – levels", () => {
   test("15x23 level renders correct piece count", async ({ page }) => {
-    await page.route("**/api/get-images**", (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify(mockPhotosResponse),
-      })
-    );
-    await page.route("**/api/get-image**", (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify(mockPhoto),
-      })
-    );
+    await mockApiRoutes(page);
     await page.goto(`/game/${mockPhoto.id}?level=15x23`);
     await page.waitForSelector("[draggable='true']", { timeout: 15_000 });
     // mockPhoto: height=800, width=1200 → cols=15, rows=Math.round(800/1200*15)=10 → 150 pieces
@@ -96,20 +83,7 @@ test.describe("Game page – levels", () => {
   });
 
   test("18x26 level renders correct piece count", async ({ page }) => {
-    await page.route("**/api/get-images**", (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify(mockPhotosResponse),
-      })
-    );
-    await page.route("**/api/get-image**", (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify(mockPhoto),
-      })
-    );
+    await mockApiRoutes(page);
     await page.goto(`/game/${mockPhoto.id}?level=18x26`);
     await page.waitForSelector("[draggable='true']", { timeout: 15_000 });
     // mockPhoto: height=800, width=1200 → cols=18, rows=Math.round(800/1200*18)=12 → 216 pieces
