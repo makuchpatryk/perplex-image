@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-11-10",
+  compatibilityDate: "2025-06-07",
   app: {
     head: {
       title: "Perplex Image",
@@ -42,5 +42,4 @@ export default defineNuxtConfig({
     // options here
   },
 
-  compatibilityDate: "2025-06-07"
 });

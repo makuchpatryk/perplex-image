@@ -32,7 +32,7 @@ const submitHandler = () => {
   >
     <template #content>
       <div class="h-full flex flex-col items-center justify-center">
-        <div class="text-7xl mb-6">Pause</div>
+        <div class="text-7xl mb-6">{{ $t("Puzzle Complete!") }}</div>
         <div class="mt-4 mb-6">
           <div class="flex justify-between w-[200px]">
             <h2 class="font-semibold">Time</h2>
