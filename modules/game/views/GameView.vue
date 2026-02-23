@@ -17,6 +17,7 @@ export interface GameData {
   highlight: number | string;
   heightScreen: number;
   moves: number;
+  selectedPositions: number[];
 }
 
 const props = withDefaults(defineProps<GameProps>(), {
@@ -39,6 +40,7 @@ const data = reactive<GameData>({
   highlight: "",
   heightScreen: 0,
   moves: 0,
+  selectedPositions: [],
 });
 
 function openModal() {
@@ -62,6 +64,8 @@ const {
   resetStopwatch,
   onSwap,
   onDragEnter,
+  toggleSelection,
+  clearSelection,
 } = await useEventGame(props, data, {
   openModal,
 });
@@ -72,12 +76,14 @@ const displayMoves = computed(() => {
 function onPause() {
   data.isPauseModalOpened = true;
   stopStopwatch();
+  clearSelection();
 }
 function onReset() {
   data.moves = 0;
   data.shuffledPieces = shufflePieces();
   resetStopwatch();
   startStopwatch();
+  clearSelection();
 }
 function onContinue() {
   data.isPauseModalOpened = false;
@@ -159,8 +165,11 @@ onMounted(() => {
             :key="item.position"
             :imgSrc="data.imgSrc"
             :is-highlight="data.highlight === item.position"
+            :is-selected="data.selectedPositions.includes(item.position)"
+            :selected-positions="data.selectedPositions"
             @swap="onSwap"
             @drag-enter="onDragEnter"
+            @select="({ position, multi }) => toggleSelection(position, multi)"
           />
         </div>
       </div>
@@ -172,6 +181,21 @@ onMounted(() => {
         {{ displayMoves }}
       </div>
       <div class="text-[#303030] text-2xl">{{ displayTime }}</div>
+    </div>
+    <!-- Pasek selekcji grupowej -->
+    <div
+      v-if="data.selectedPositions.length > 0"
+      class="mt-4 flex items-center gap-3 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg w-full"
+    >
+      <span class="text-blue-700 text-sm font-medium">
+        {{ data.selectedPositions.length }} {{ data.selectedPositions.length === 1 ? 'klocek zaznaczony' : 'klocki zaznaczone' }} — przeciągnij grupę w nowe miejsce
+      </span>
+      <button
+        class="ml-auto text-xs text-blue-500 underline hover:text-blue-700"
+        @click="clearSelection"
+      >
+        Odznacz wszystko
+      </button>
     </div>
   </div>
 </template>

@@ -36,6 +36,7 @@ export interface ImagePieces {
   backgroundPosition: string;
   width: string;
   height: string;
+  selected?: boolean;
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
