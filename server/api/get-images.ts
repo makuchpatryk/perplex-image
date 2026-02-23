@@ -4,7 +4,14 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const { per_page } = getQuery(event);
 
-  // Walidacja: per_page musi być liczbą całkowitą w zakresie 1–100
+  if (!config.pexelsApiKey) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Server Error",
+      message: "Brak klucza API Pexels. Ustaw zmienną środowiskową PEXELS_API_KEY.",
+    });
+  }
+
   const perPage = Number(per_page);
   if (!per_page || !Number.isInteger(perPage) || perPage < 1 || perPage > 100) {
     throw createError({
