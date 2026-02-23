@@ -46,7 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="justify-center items-center flex mx-auto w-[700px] flex-col">
+  <div class="justify-center items-center flex mx-auto w-full max-w-[700px] flex-col px-4">
     <span class="text-3xl font-semibold text-center text-[#605F5B] mb-5">{{
       $t("A tile-sliding picture game.")
     }}</span>
@@ -61,7 +61,7 @@ onMounted(() => {
       />
       <span
         v-else
-        class="block w-[700px] h-[466px] bg-[length:400%] animate-moving bg-gradient-to-r from-[#777777] to-[#bbbbbb]"
+        class="block w-full h-[466px] bg-[length:400%] animate-moving bg-gradient-to-r from-[#777777] to-[#bbbbbb]"
       ></span>
       <div
         class="w-full absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] flex flex-col items-center justify-center"

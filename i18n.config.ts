@@ -15,6 +15,8 @@ export default defineI18nConfig(() => ({
       Continue: "Continue",
       "Back to menu": "Back to menu",
       "Puzzle Complete!": "Puzzle Complete!",
+      "Hold Ctrl or Shift and click tiles to select multiple and drag a group":
+        "Hold Ctrl or Shift and click tiles to select multiple and drag a group",
     },
   },
 }));
