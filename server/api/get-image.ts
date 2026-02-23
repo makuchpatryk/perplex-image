@@ -2,7 +2,14 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const { id } = getQuery(event);
 
-  // Walidacja: id musi być dodatnią liczbą całkowitą (zabezpieczenie przed SSRF)
+  if (!config.pexelsApiKey) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Internal Server Error",
+      message: "Brak klucza API Pexels. Ustaw zmienną środowiskową PEXELS_API_KEY.",
+    });
+  }
+
   const photoId = Number(id);
   if (!id || !Number.isInteger(photoId) || photoId <= 0) {
     throw createError({

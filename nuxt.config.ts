@@ -63,6 +63,13 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    "/api/**": {
+      headers: {
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+      },
+    },
     "/**": {
       headers: {
         "X-Content-Type-Options": "nosniff",
@@ -76,7 +83,7 @@ export default defineNuxtConfig({
           "script-src 'self' 'unsafe-inline'; " +
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
           "img-src 'self' data: blob: https://images.pexels.com https://www.pexels.com; " +
-          "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com ws: wss:; " +
+          "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.pexels.com ws: wss:; " +
           "font-src 'self' https://fonts.gstatic.com; " +
           "object-src 'none'; " +
           "base-uri 'self'; " +
