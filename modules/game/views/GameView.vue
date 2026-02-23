@@ -116,15 +116,40 @@ onMounted(() => {
     @close="closeModal"
     @submit="onSubmitHandler"
   />
+  <Teleport to="body">
+    <Transition name="preview-overlay">
+      <div
+        v-if="enlargePreview"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm cursor-pointer"
+        @click.self="enlargePreview = false"
+      >
+        <div class="relative flex flex-col items-center gap-3 pointer-events-none">
+          <span aria-hidden="true" class="pointer-events-none select-none bg-white/20 text-white text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full backdrop-blur-md border border-white/30">
+            {{ $t("Preview") }}
+          </span>
+          <img
+            :src="data.imgSrc"
+            :alt="$t('Preview')"
+            class="max-h-[80vh] max-w-[90vw] rounded-lg shadow-2xl pointer-events-none select-none"
+          />
+          <button
+            :aria-label="$t('Close preview')"
+            class="pointer-events-auto absolute -top-2 -right-2 w-7 h-7 flex items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/40 transition backdrop-blur-md border border-white/30 text-sm font-bold"
+            @click="enlargePreview = false"
+          >✕</button>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
   <div class="items-center flex mx-auto w-[700px] flex-col mt-10">
     <div class="mb-10 h-[66px]">
       <img
-          :src="data.imgSrc"
-          :class="['transition duration-300 ease-in-out cursor-pointer', enlargePreview ? 'scale-150' : 'w-[100px] backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]  hover:opacity-70']"
-          @click="() => {
-          enlargePreview = !enlargePreview;
-        }"
-       alt=""/>
+        :src="data.imgSrc"
+        class="w-[100px] h-full object-cover rounded cursor-pointer shadow-[0px_0px_23.9px_8px_#0000001A] hover:opacity-70 hover:scale-105 transition duration-200 ease-in-out"
+        :title="$t('Preview')"
+        @click="enlargePreview = true"
+        alt=""
+      />
     </div>
     <div
       :class="['flex justify-start backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]']"
@@ -170,3 +195,26 @@ onMounted(() => {
     </p>
   </div>
 </template>
+
+<style scoped>
+.preview-overlay-enter-active,
+.preview-overlay-leave-active {
+  transition: opacity 0.25s ease;
+}
+.preview-overlay-enter-active .relative,
+.preview-overlay-leave-active .relative {
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.preview-overlay-enter-from,
+.preview-overlay-leave-to {
+  opacity: 0;
+}
+.preview-overlay-enter-from .relative {
+  transform: scale(0.85);
+  opacity: 0;
+}
+.preview-overlay-leave-to .relative {
+  transform: scale(0.85);
+  opacity: 0;
+}
+</style>
