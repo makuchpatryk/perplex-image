@@ -1,6 +1,6 @@
 import { Levels, WIDTH_GAME } from "~/modules/core/constants";
 import type { ImagePieces } from "~/modules/core/types";
-import type { GameData, GameProps } from "../views/GameView.vue";
+import type { GameData, GameProps } from "../types";
 
 async function useShuffle(props: GameProps, data: GameData) {
   const { shuffle } = await useImage();
@@ -30,6 +30,7 @@ async function useShuffle(props: GameProps, data: GameData) {
     ) {
       pieces[i] = {
         position: i,
+        originalIndex: i,
         backgroundPosition: `-${
           widthElement.value * Math.round(i % Number(Levels[props.level]))
         }px -${
@@ -39,7 +40,13 @@ async function useShuffle(props: GameProps, data: GameData) {
         height: `${heightElement.value}px`,
       };
     }
-    return shuffle(pieces);
+    const shuffled = shuffle<ImagePieces>([...pieces]);
+    // Zaktualizuj `position` (slot wizualny) do nowej kolejności po przetasowaniu
+    // `originalIndex` pozostaje niezmieniony — to docelowe miejsce klocka
+    return shuffled.map((piece: ImagePieces, idx: number) => ({
+      ...piece,
+      position: idx,
+    }));
   }
   return { shufflePieces };
 }

@@ -31,12 +31,17 @@ export interface PexelPhoto {
   };
   url: string;
 }
+
 export interface ImagePieces {
   position: number;
+  originalIndex: number;
   backgroundPosition: string;
   width: string;
   height: string;
+  selected?: boolean;
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export type TODO = any;
+export interface DisplacedMapping {
+  piece: ImagePieces;
+  newSlot: number;
+}

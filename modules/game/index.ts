@@ -1,38 +1,32 @@
 import { defineNuxtModule } from "@nuxt/kit";
 import { resolve, join } from "path";
 import type { Nuxt } from "@nuxt/schema";
-import type { TODO } from "../core/types";
 
 export default defineNuxtModule({
   meta: {
-    // Usually the npm package name of your module - in this case a local modal
     name: "game-module",
-    // The key in `nuxt.config` that holds the
     configKey: "game-module",
-    // Compatibility constraints
     compatibility: {
-      // Semver version of supported nuxt versions
       nuxt: "^3.9.0",
     },
   },
-  setup(options: TODO, nuxt: Nuxt) {
+  setup(_options: Record<string, unknown>, nuxt: Nuxt) {
     // Auto register components
-    nuxt.hook("components:dirs", (dirs: TODO) => {
-      dirs.push({
-        path: join(__dirname, "components"),
-      });
-      dirs.push({
-        path: join(__dirname, "views"),
-      });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    nuxt.hook("components:dirs", (dirs: any) => {
+      dirs.push({ path: join(__dirname, "components") });
+      dirs.push({ path: join(__dirname, "views") });
     });
 
     // Auto register composables
-    nuxt.hook("imports:dirs", (dirs: TODO) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    nuxt.hook("imports:dirs", (dirs: any) => {
       dirs.push(resolve(__dirname, "./composables"));
     });
 
     // Auto register pages
-    nuxt.hook("pages:extend", (pages: TODO) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    nuxt.hook("pages:extend", (pages: any) => {
       pages.push({
         name: "index",
         path: "/",

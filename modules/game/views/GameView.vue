@@ -1,23 +1,6 @@
 <script setup lang="ts">
-import type { ImagePieces, PexelPhoto } from "~/modules/core/types";
 import { LevelsKeys, WIDTH_GAME } from "~/modules/core/constants";
-
-export interface GameProps {
-  selectedImage: PexelPhoto;
-  level: LevelsKeys;
-}
-export interface GameData {
-  height: number;
-  width: number;
-  url: string;
-  imgSrc: string;
-  isFinishedModalOpened: boolean;
-  isPauseModalOpened: boolean;
-  shuffledPieces: ImagePieces[] | undefined;
-  highlight: number | string;
-  heightScreen: number;
-  moves: number;
-}
+import type { GameProps, GameData } from "../types";
 
 const props = withDefaults(defineProps<GameProps>(), {
   level: LevelsKeys["9x13"],
@@ -39,6 +22,7 @@ const data = reactive<GameData>({
   highlight: "",
   heightScreen: 0,
   moves: 0,
+  selectedPositions: [],
 });
 
 function openModal() {
@@ -62,6 +46,8 @@ const {
   resetStopwatch,
   onSwap,
   onDragEnter,
+  toggleSelection,
+  clearSelection,
 } = await useEventGame(props, data, {
   openModal,
 });
@@ -72,12 +58,14 @@ const displayMoves = computed(() => {
 function onPause() {
   data.isPauseModalOpened = true;
   stopStopwatch();
+  clearSelection();
 }
 function onReset() {
   data.moves = 0;
   data.shuffledPieces = shufflePieces();
   resetStopwatch();
   startStopwatch();
+  clearSelection();
 }
 function onContinue() {
   data.isPauseModalOpened = false;
@@ -159,8 +147,11 @@ onMounted(() => {
             :key="item.position"
             :imgSrc="data.imgSrc"
             :is-highlight="data.highlight === item.position"
+            :is-selected="data.selectedPositions.includes(item.position)"
+            :selected-positions="data.selectedPositions"
             @swap="onSwap"
             @drag-enter="onDragEnter"
+            @select="({ position, multi }) => toggleSelection(position, multi)"
           />
         </div>
       </div>
@@ -173,5 +164,9 @@ onMounted(() => {
       </div>
       <div class="text-[#303030] text-2xl">{{ displayTime }}</div>
     </div>
+    <!-- Podpowiedź multi-select -->
+    <p class="mt-3 text-xs text-[#aaa] text-center w-full select-none">
+      Przytrzymaj <kbd class="font-sans bg-[#f0f0f0] text-[#555] border border-[#ccc] rounded px-1 py-0.5 text-[10px]">Ctrl</kbd> lub <kbd class="font-sans bg-[#f0f0f0] text-[#555] border border-[#ccc] rounded px-1 py-0.5 text-[10px]">Shift</kbd> i klikaj klocki, aby zaznaczyć kilka i przeciągnąć grupę
+    </p>
   </div>
 </template>
