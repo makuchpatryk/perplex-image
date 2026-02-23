@@ -12,6 +12,21 @@ export default defineNuxtConfig({
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1",
       meta: [{ name: "description", content: "Perplex Image" }],
+      link: [
+        {
+          rel: "preconnect",
+          href: "https://fonts.googleapis.com",
+        },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap",
+        },
+      ],
     },
   },
 
@@ -59,10 +74,10 @@ export default defineNuxtConfig({
         "Content-Security-Policy":
           "default-src 'self'; " +
           "script-src 'self' 'unsafe-inline'; " +
-          "style-src 'self' 'unsafe-inline'; " +
-          "img-src 'self' data: https://images.pexels.com https://www.pexels.com; " +
-          "connect-src 'self'; " +
-          "font-src 'self'; " +
+          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+          "img-src 'self' data: blob: https://images.pexels.com https://www.pexels.com; " +
+          "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com ws: wss:; " +
+          "font-src 'self' https://fonts.gstatic.com; " +
           "object-src 'none'; " +
           "base-uri 'self'; " +
           "form-action 'self'; " +
