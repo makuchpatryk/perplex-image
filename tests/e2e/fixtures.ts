@@ -63,6 +63,9 @@ export async function mockApiRoutes(page: Page) {
 type Fixtures = {
   homePage: Page;
   gamePage: Page;
+  navigateToHome: () => Promise<void>;
+  selectDifficulty9x13: () => Promise<void>;
+  startGame: () => Promise<void>;
 };
 
 export const test = base.extend<Fixtures>({
@@ -86,6 +89,33 @@ export const test = base.extend<Fixtures>({
     // Wait for at least one puzzle piece to be rendered
     await page.waitForSelector("[draggable='true']", { timeout: 15_000 });
     await use(page);
+  },
+
+  navigateToHome: async ({ page }, use) => {
+    await use(async () => {
+      await mockApiRoutes(page);
+      const getImagesResponse = page.waitForResponse("**/api/get-images**", {
+        timeout: 30_000,
+      });
+      await page.goto("/");
+      await getImagesResponse;
+      await page.waitForSelector("img.w-full", { timeout: 15_000 });
+    });
+  },
+
+  selectDifficulty9x13: async ({ page }, use) => {
+    await use(async () => {
+      // 9x13 is the default; explicitly click the label to ensure it is selected
+      await page.locator("label[for='9x13']").click();
+    });
+  },
+
+  startGame: async ({ page }, use) => {
+    await use(async () => {
+      await page.getByRole("button", { name: /Play/i }).click();
+      // Wait for puzzle pieces to be rendered on the game page
+      await page.waitForSelector("[draggable='true']", { timeout: 15_000 });
+    });
   },
 });
 

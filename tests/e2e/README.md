@@ -371,7 +371,7 @@ Tests automatically:
 ## 📝 Notes
 
 - Tests require dev server running on `http://localhost:3000`
-- Tests use real Pexels API (ensure API key is valid)
+- Tests use a mocked Pexels API via Playwright route interception (no real API key required)
 - Tests are idempotent and can run multiple times
 - Screenshots and traces are stored in `test-results/` directory
 
