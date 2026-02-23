@@ -33,9 +33,11 @@ export interface PexelPhoto {
 }
 export interface ImagePieces {
   position: number;
+  originalIndex: number;
   backgroundPosition: string;
   width: string;
   height: string;
+  selected?: boolean;
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
