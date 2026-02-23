@@ -1,7 +1,7 @@
 <template>
   <div
       :class="[
-      'h-lvh overflow-hidden p-4',
+      'min-h-lvh overflow-x-hidden p-4',
       'bg-[length:200%] animate-moving bg-gradient-to-r from-[#FBFBFB] to-[#bfbfbf]',
     ]"
   >
@@ -10,7 +10,7 @@
         <img src="/assets/logo.svg" />
       </NuxtLink>
     </nav>
-    <div class="flex w-full h-screen overflow-auto">
+    <div class="flex w-full h-full overflow-y-auto overflow-x-hidden">
       <slot />
     </div>
   </div>

@@ -2,6 +2,11 @@
 import { LevelsKeys, WIDTH_GAME } from "~/modules/core/constants";
 import type { GameProps, GameData } from "../types";
 
+const { width: windowWidth } = useWindowSize();
+const boardScale = computed(() =>
+  Math.min(1, (windowWidth.value - 32) / WIDTH_GAME)
+);
+
 const props = withDefaults(defineProps<GameProps>(), {
   level: LevelsKeys["9x13"],
 });
@@ -141,7 +146,7 @@ onMounted(() => {
       </div>
     </Transition>
   </Teleport>
-  <div class="items-center flex mx-auto w-[700px] flex-col mt-10">
+  <div class="items-center flex mx-auto w-full flex-col mt-6 px-4">
     <div class="mb-10 h-[66px]">
       <img
         :src="data.imgSrc"
@@ -152,36 +157,52 @@ onMounted(() => {
       />
     </div>
     <div
-      :class="['flex justify-start backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]']"
+      class="overflow-hidden"
+      :style="{
+        width: `${WIDTH_GAME * boardScale}px`,
+        height: `${(data.heightScreen + 2) * boardScale}px`,
+      }"
     >
       <div
+        :class="['flex justify-start backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]']"
         :style="{
-          height: `${data.heightScreen + 2}px`,
+          transform: `scale(${boardScale})`,
+          transformOrigin: 'top left',
           width: `${WIDTH_GAME}px`,
         }"
       >
         <div
-          class="flex flex-wrap "
           :style="{
-            minWidth: `${WIDTH_GAME}px`,
+            height: `${data.heightScreen + 2}px`,
+            width: `${WIDTH_GAME}px`,
           }"
         >
-          <Piece
-            v-for="item in data.shuffledPieces"
-            :item="item"
-            :key="item.position"
-            :imgSrc="data.imgSrc"
-            :is-highlight="data.highlight === item.position"
-            :is-selected="data.selectedPositions.includes(item.position)"
-            :selected-positions="data.selectedPositions"
-            @swap="onSwap"
-            @drag-enter="onDragEnter"
-            @select="({ position, multi }) => toggleSelection(position, multi)"
-          />
+          <div
+            class="flex flex-wrap "
+            :style="{
+              minWidth: `${WIDTH_GAME}px`,
+            }"
+          >
+            <Piece
+              v-for="item in data.shuffledPieces"
+              :item="item"
+              :key="item.position"
+              :imgSrc="data.imgSrc"
+              :is-highlight="data.highlight === item.position"
+              :is-selected="data.selectedPositions.includes(item.position)"
+              :selected-positions="data.selectedPositions"
+              @swap="onSwap"
+              @drag-enter="onDragEnter"
+              @select="({ position, multi }) => toggleSelection(position, multi)"
+            />
+          </div>
         </div>
       </div>
     </div>
-    <div class="mt-10 flex justify-between w-full items-center">
+    <div
+      class="mt-6 flex justify-between items-center"
+      :style="{ width: `${WIDTH_GAME * boardScale}px` }"
+    >
       <UiButton type="outline" @click="onReset">{{ $t("RESTART") }}</UiButton>
       <UiButton type="outline" @click="onPause">{{ $t("PAUSE") }}</UiButton>
       <div class="text-[#303030] text-2xl">
@@ -190,8 +211,11 @@ onMounted(() => {
       <div class="text-[#303030] text-2xl">{{ displayTime }}</div>
     </div>
     <!-- Podpowiedź multi-select -->
-    <p class="mt-3 text-xs text-[#aaa] text-center w-full select-none">
-      Przytrzymaj <kbd class="font-sans bg-[#f0f0f0] text-[#555] border border-[#ccc] rounded px-1 py-0.5 text-[10px]">Ctrl</kbd> lub <kbd class="font-sans bg-[#f0f0f0] text-[#555] border border-[#ccc] rounded px-1 py-0.5 text-[10px]">Shift</kbd> i klikaj klocki, aby zaznaczyć kilka i przeciągnąć grupę
+    <p
+      class="mt-3 text-xs text-[#aaa] text-center select-none"
+      :style="{ width: `${WIDTH_GAME * boardScale}px` }"
+    >
+      {{ $t("Hold Ctrl or Shift and click tiles to select multiple and drag a group") }}
     </p>
   </div>
 </template>

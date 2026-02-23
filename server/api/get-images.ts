@@ -12,7 +12,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // ...existing code...
   const perPage = Number(per_page);
   if (!per_page || !Number.isInteger(perPage) || perPage < 1 || perPage > 100) {
     throw createError({

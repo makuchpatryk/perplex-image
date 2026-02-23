@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'h-lvh overflow-hidden p-4',
+      'min-h-lvh overflow-x-hidden p-4',
       'bg-[length:200%] animate-moving bg-gradient-to-r from-[#FBFBFB] to-[#bfbfbf]',
     ]"
   >
