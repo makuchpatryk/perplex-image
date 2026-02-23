@@ -15,6 +15,8 @@ export default defineI18nConfig(() => ({
       Continue: "Continue",
       "Back to menu": "Back to menu",
       "Puzzle Complete!": "Puzzle Complete!",
+      Preview: "Preview",
+      "Close preview": "Close preview",
     },
   },
 }));
