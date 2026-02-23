@@ -1,0 +1,79 @@
+name: E2E Tests
+
+on:
+  # Włącza się po merge PR do main/master
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - master
+
+  # Ręczny trigger z możliwością wyboru brancha
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch do przetestowania'
+        required: false
+        default: 'main'
+
+jobs:
+  e2e:
+    # Przy PR uruchom tylko gdy faktycznie zmergowano (nie tylko zamknięto)
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+
+    name: Playwright E2E – Chromium
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.sha }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Zainstaluj zależności
+        run: pnpm install --frozen-lockfile
+
+      - name: Zainstaluj przeglądarki Playwright
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Zbuduj aplikację
+        run: pnpm build
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+
+      - name: Uruchom testy E2E
+        run: pnpm test:e2e --project=chromium
+        env:
+          CI: true
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+
+      - name: Wgraj raport Playwright (zawsze, nawet przy błędach)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Wgraj screenshoty z nieudanych testów
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results-${{ github.run_id }}
+          path: test-results/
+          retention-days: 7
+

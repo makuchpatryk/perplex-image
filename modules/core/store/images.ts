@@ -3,7 +3,6 @@ import type {
   ImagePieces,
   PexelPhoto,
   ResponsePexel,
-  TODO,
 } from "~/modules/core/types";
 
 interface State {
@@ -25,10 +24,8 @@ export const useImagesStore = defineStore({
       this.shuffledPieces = shuffledPieces;
     },
     async randomSelectImage(): Promise<void> {
-      return Promise.resolve(
-        (this.selectedImage =
-          this.photos[Math.round(Math.random() * this.photos.length)])
-      );
+      this.selectedImage =
+        this.photos[Math.round(Math.random() * this.photos.length)];
     },
     async setSelectedImage(image: PexelPhoto) {
       return Promise.resolve().then(() => {
@@ -45,9 +42,10 @@ export const useImagesStore = defineStore({
           media[Math.floor(Math.random() * media.length)]
       );
     },
-    async getImage(options: { id: TODO }) {
+    async getImage(options: { id: string | string[] }) {
+      const id = Array.isArray(options.id) ? options.id[0] : options.id;
       const image = await $fetch<PexelPhoto>(
-        `/api/get-image/?id=${options.id}`
+        `/api/get-image/?id=${id}`
       );
 
       await this.setSelectedImage(image);
