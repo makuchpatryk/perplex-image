@@ -9,6 +9,7 @@
  * – drag&drop jednego klocka: zamiana miejsc, licznik moves +1
  * – drag&drop jednego klocka NIE kończy gry natychmiast (główny naprawiony bug)
  * – drag&drop grupy klocków: licznik moves rośnie, klocki nadal widoczne
+ * – drag&drop grupy klocków poza granicę planszy: licznik moves NIE rośnie
  * – RESTART czyści selekcję
  * – PAUSE czyści selekcję
  */
@@ -342,6 +343,30 @@ test.describe('Multi-selekcja i Drag & Drop', () => {
     await expect(hint).toBeVisible();
     const hintText = await hint.textContent();
     expect(hintText).toMatch(/Ctrl|Shift/);
+  });
+
+  // ── 16. Grupowy drag poza granicę planszy: moves NIE rośnie ───────────────
+  test('grupowy drag poza granicę planszy nie zwiększa moves', async ({
+    page, navigateToHome, selectDifficulty9x13, startGame,
+  }) => {
+    await startEasyGame(navigateToHome, selectDifficulty9x13, startGame, page);
+
+    await expect(page.locator('text=/0 Move/')).toBeVisible();
+
+    const pieces = page.locator('.cursor-grab');
+
+    // Zaznacz dwa pierwsze klocki (pozycje 0 i 1)
+    await pieces.nth(0).click();
+    await pieces.nth(1).click({ modifiers: ['Shift'] });
+    await page.waitForTimeout(150);
+    await expect(selectedPieces(page)).toHaveCount(2);
+
+    // Przeciągnij klocek 1 → klocek 0 (offset = –1).
+    // isGroupMoveValid odrzuci ten ruch, bo klocek 0 musiałby trafić na pozycję –1.
+    await dragPiece(page, 1, 0);
+
+    // Ruch jest nieprawidłowy → licznik moves wciąż 0
+    await expect(page.locator('text=/0 Move/')).toBeVisible();
   });
 
 });
