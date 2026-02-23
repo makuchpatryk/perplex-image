@@ -13,6 +13,8 @@ export default defineI18nConfig(() => ({
       PAUSE: "PAUSE",
       Move: "Move",
       Continue: "Continue",
+      "Back to menu": "Back to menu",
+      "Puzzle Complete!": "Puzzle Complete!",
     },
   },
 }));

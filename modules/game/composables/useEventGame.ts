@@ -4,7 +4,6 @@ import type { TODO } from "~core/types";
 export interface Options {
   openModal: () => void;
 }
-console.log('ss')
 
 export async function useEventGame(
   props: GameProps,
