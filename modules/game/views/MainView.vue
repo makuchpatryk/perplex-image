@@ -46,7 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="justify-center items-center flex mx-auto w-full max-w-[700px] flex-col px-4">
+  <div class="justify-center items-center flex mx-auto w-full max-w-[700px] flex-col px-4 pb-8 md:pb-10">
     <span class="text-3xl font-semibold text-center text-[#605F5B] mb-5">{{
       $t("A tile-sliding picture game.")
     }}</span>

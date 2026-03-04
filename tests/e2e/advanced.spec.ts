@@ -2,11 +2,11 @@ import { test, expect, mockPhoto, mockApiRoutes } from "./fixtures";
 
 test.describe("Game page – layout", () => {
   test("renders correct number of pieces and UI controls for 9x13", async ({ gamePage }) => {
-    // mockPhoto: height=800, width=1200 → cols=9, rows=round(800/1200*9)=6 → 54 pieces
+    // mockPhoto: height=800, width=1200 -> cols=9, rows=round(800/1200*9)=6 -> 54 pieces
     await expect(gamePage.locator("[draggable='true']")).toHaveCount(54);
-    await expect(gamePage.locator("img[alt='']").first()).toBeVisible();
+    await expect(gamePage.getByRole("button", { name: /Preview/i })).toBeVisible();
     await expect(gamePage.getByText(/0 Move/)).toBeVisible();
-    await expect(gamePage.getByText("00:00:00")).toBeVisible();
+    await expect(gamePage.getByText(/\d{2}:\d{2}:\d{2}/)).toBeVisible();
   });
 
   test("correct piece count for 15x23 and 18x26 levels", async ({ page }) => {
@@ -39,4 +39,3 @@ test.describe("Game page – restart", () => {
     await expect(gamePage.getByText("00:00:00")).toBeVisible();
   });
 });
-

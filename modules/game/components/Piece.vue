@@ -16,26 +16,29 @@ withDefaults(defineProps<Props>(), {
   selectedPositions: () => [],
 });
 
-const emit = defineEmits(["swap", "drag-enter", "select"]);
+const emit = defineEmits(["swap", "drag-enter", "drag-start", "drag-end", "select"]);
 
 const startDrag = (
-  evt: DragEvent & { dataTransfer?: DataTransfer },
+  evt: DragEvent & { dataTransfer?: DataTransfer | null },
   position: string,
   selectedPositions: number[]
 ) => {
   if (!evt.dataTransfer) return;
+
+  emit("drag-start", { position, selectedPositions });
+
   evt.dataTransfer.dropEffect = "move";
   evt.dataTransfer.effectAllowed = "move";
   evt.dataTransfer.setData("position", position);
-  // Przekaż listę zaznaczonych slotów, żeby drop wiedział o grupie
+  // Przekaz listę zaznaczonych slotów, żeby drop wiedział o grupie
   evt.dataTransfer.setData("selectedPositions", JSON.stringify(selectedPositions));
 
-  // Customowy ghost image gdy przeciągamy grupę
+  // Customowy ghost image gdy przeciagamy grupę
   if (selectedPositions.length > 1) {
     const ghost = document.createElement("div");
     ghost.style.cssText =
       "position:fixed;top:-200px;left:-200px;display:flex;align-items:center;justify-content:center;background:rgba(59,130,246,0.9);color:white;font-weight:bold;font-size:16px;border-radius:10px;padding:8px 16px;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.3);gap:6px;";
-    ghost.innerHTML = `<span style="font-size:18px;">✕${selectedPositions.length}</span><span style="font-size:12px;opacity:0.9;">klocki</span>`;
+    ghost.innerHTML = `<span style="font-size:18px;">x${selectedPositions.length}</span><span style="font-size:12px;opacity:0.9;">klocki</span>`;
     document.body.appendChild(ghost);
     evt.dataTransfer.setDragImage(ghost, ghost.offsetWidth / 2, ghost.offsetHeight / 2);
     setTimeout(() => {
@@ -47,11 +50,22 @@ const startDrag = (
 const onDragEnter = (evt: DragEvent, position: number | string) => {
   evt.preventDefault();
   evt.stopPropagation();
-  emit("drag-enter", { position });
+
+  const draggedPosition = evt.dataTransfer?.getData("position");
+  const rawSelectedPositions = evt.dataTransfer?.getData("selectedPositions") ?? "";
+
+  let selectedPositions: number[] = [];
+  try {
+    selectedPositions = JSON.parse(rawSelectedPositions);
+  } catch {
+    selectedPositions = [];
+  }
+
+  emit("drag-enter", { position, draggedPosition, selectedPositions });
 };
 
 const onDrop = (
-  evt: DragEvent & { dataTransfer?: DataTransfer },
+  evt: DragEvent & { dataTransfer?: DataTransfer | null },
   positionCurrent: number
 ) => {
   if (!evt.dataTransfer) return;
@@ -78,6 +92,8 @@ const onPieceClick = (evt: MouseEvent, position: number) => {
     @dragover.prevent
     @dragenter="onDragEnter($event, item.position)"
     :key="item.position"
+    :data-highlighted="isHighlight ? 'true' : 'false'"
+    :data-selected="isSelected ? 'true' : 'false'"
     :class="[
       isHighlight && !isSelected && 'opacity-40',
       isSelected
@@ -87,7 +103,7 @@ const onPieceClick = (evt: MouseEvent, position: number) => {
     class="cursor-grab m-[1px] relative select-none transition-transform duration-100"
     @click="onPieceClick($event, item.position)"
   >
-    <!-- Nakładka zaznaczenia -->
+    <!-- Nakladka zaznaczenia -->
     <div
       v-if="isSelected"
       class="absolute inset-0 bg-blue-500/30 pointer-events-none z-10 mix-blend-multiply"
@@ -103,6 +119,7 @@ const onPieceClick = (evt: MouseEvent, position: number) => {
       draggable="true"
       class="overflow-hidden"
       @dragstart="startDrag($event, String(item.position), selectedPositions)"
+      @dragend="emit('drag-end')"
       :style="{
         backgroundPosition: item.backgroundPosition,
         width: item.width,

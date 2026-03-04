@@ -14,9 +14,8 @@ export interface GameData {
   isFinishedModalOpened: boolean;
   isPauseModalOpened: boolean;
   shuffledPieces: ImagePieces[] | undefined;
-  highlight: number | string;
+  highlightPositions: number[];
   heightScreen: number;
   moves: number;
   selectedPositions: number[];
 }
-
