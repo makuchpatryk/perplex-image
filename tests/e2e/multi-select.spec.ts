@@ -6,7 +6,10 @@ import type { Page } from "@playwright/test";
 const pieces = (page: Page) => page.locator(".cursor-grab");
 
 const selected = (page: Page) =>
-  page.locator(".cursor-grab").filter({ has: page.locator(".bg-blue-500\\/30") });
+  page.locator('.cursor-grab[data-selected="true"]');
+
+const highlighted = (page: Page) =>
+  page.locator('.cursor-grab[data-highlighted="true"]');
 
 async function dragPiece(page: Page, sourceIndex: number, targetIndex: number) {
   const src = pieces(page).nth(sourceIndex);
@@ -21,6 +24,49 @@ async function dragPiece(page: Page, sourceIndex: number, targetIndex: number) {
   await page.waitForTimeout(80);
   await page.mouse.up();
   await page.waitForTimeout(400);
+}
+
+async function fireDragEnter(
+  page: Page,
+  targetIndex: number,
+  draggedPosition: number,
+  selectedPositions: number[]
+) {
+  await pieces(page).nth(targetIndex).evaluate(
+    (el, payload) => {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.setData("position", String(payload.draggedPosition));
+      dataTransfer.setData("selectedPositions", JSON.stringify(payload.selectedPositions));
+      const event = new DragEvent("dragenter", {
+        bubbles: true,
+        cancelable: true,
+        dataTransfer,
+      });
+      el.dispatchEvent(event);
+    },
+    { draggedPosition, selectedPositions }
+  );
+  await page.waitForTimeout(80);
+}
+
+async function dragHover(
+  page: Page,
+  sourceIndex: number,
+  targetIndex: number
+) {
+  const src = pieces(page).nth(sourceIndex);
+  const tgt = pieces(page).nth(targetIndex);
+  const srcBox = await src.boundingBox();
+  const tgtBox = await tgt.boundingBox();
+  if (!srcBox || !tgtBox) throw new Error("Brak bounding box");
+
+  await page.mouse.move(srcBox.x + srcBox.width / 2, srcBox.y + srcBox.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(80);
+  await page.mouse.move(tgtBox.x + tgtBox.width / 2, tgtBox.y + tgtBox.height / 2, {
+    steps: 15,
+  });
+  await page.waitForTimeout(120);
 }
 
 // ─── Selekcja ─────────────────────────────────────────────────────────────────
@@ -44,7 +90,7 @@ test.describe("Multi-selekcja – zaznaczanie klocków", () => {
     await gamePage.waitForTimeout(100);
     await expect(selected(gamePage)).toHaveCount(3);
 
-    // zwykły klik → zostaje tylko ten jeden
+    // zwykły klik -> zostaje tylko ten jeden
     await pieces(gamePage).nth(5).click();
     await gamePage.waitForTimeout(100);
     await expect(selected(gamePage)).toHaveCount(1);
@@ -146,6 +192,50 @@ test.describe("Drag & Drop – grupowy ruch", () => {
     await expect(pieces(gamePage)).toHaveCount(total);
     const movesAfter = await gamePage.getByText(/\d+ Move/).textContent();
     expect(movesAfter).not.toBe(movesBefore);
+  });
+
+  test("preview grupy podświetla wszystkie docelowe, niezaznaczone kafelki", async ({ gamePage }) => {
+    await pieces(gamePage).nth(0).click();
+    await pieces(gamePage).nth(1).click({ modifiers: ["Shift"] });
+    await expect(selected(gamePage)).toHaveCount(2);
+
+    // dragged=0, target=5 -> target slots [5,6]
+    await fireDragEnter(gamePage, 5, 0, [0, 1]);
+
+    await expect(highlighted(gamePage)).toHaveCount(2);
+    await expect(pieces(gamePage).nth(5)).toHaveAttribute("data-highlighted", "true");
+    await expect(pieces(gamePage).nth(6)).toHaveAttribute("data-highlighted", "true");
+
+    // Zaznaczone źródło nie jest podświetlane (Opcja A)
+    await expect(pieces(gamePage).nth(0)).toHaveAttribute("data-selected", "true");
+    await expect(pieces(gamePage).nth(0)).toHaveAttribute("data-highlighted", "false");
+    await expect(pieces(gamePage).nth(1)).toHaveAttribute("data-selected", "true");
+    await expect(pieces(gamePage).nth(1)).toHaveAttribute("data-highlighted", "false");
+  });
+
+  test("nielegalny grupowy ruch nie pokazuje podświetlenia", async ({ gamePage }) => {
+    await pieces(gamePage).nth(0).click();
+    await pieces(gamePage).nth(1).click({ modifiers: ["Shift"] });
+    await expect(selected(gamePage)).toHaveCount(2);
+
+    // dragged=0, target=8 -> offset=8; dla slotu 1 da to przejście do nowego rzędu => ruch nielegalny
+    await fireDragEnter(gamePage, 8, 0, [0, 1]);
+
+    await expect(highlighted(gamePage)).toHaveCount(0);
+  });
+
+  test("preview grupy podświetla wiele slotów przy realnym drag-hover", async ({ gamePage }) => {
+    await pieces(gamePage).nth(0).click();
+    await pieces(gamePage).nth(1).click({ modifiers: ["Shift"] });
+    await expect(selected(gamePage)).toHaveCount(2);
+
+    await dragHover(gamePage, 0, 5);
+
+    await expect(highlighted(gamePage)).toHaveCount(2);
+    await expect(pieces(gamePage).nth(5)).toHaveAttribute("data-highlighted", "true");
+    await expect(pieces(gamePage).nth(6)).toHaveAttribute("data-highlighted", "true");
+
+    await gamePage.mouse.up();
   });
 
 });

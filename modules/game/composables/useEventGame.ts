@@ -30,14 +30,14 @@ export async function useEventGame(
 
   function toggleSelection(position: number, multi: boolean) {
     if (!multi) {
-      // Klik bez modyfikatora → odznaczamy wszystko i ewentualnie zaznaczamy ten klocek
+      // Klik bez modyfikatora -> odznaczamy wszystko i ewentualnie zaznaczamy ten klocek
       if (data.selectedPositions.includes(position)) {
         data.selectedPositions = [];
       } else {
         data.selectedPositions = [position];
       }
     } else {
-      // Klik z Shift/Ctrl → toggle jednego elementu
+      // Klik z Shift/Ctrl -> toggle jednego elementu
       if (data.selectedPositions.includes(position)) {
         data.selectedPositions = data.selectedPositions.filter(
           (p: number) => p !== position
@@ -52,13 +52,119 @@ export async function useEventGame(
     data.selectedPositions = [];
   }
 
+  function clearHighlight() {
+    data.highlightPositions = [];
+  }
+
+  let dragContext: { draggedPos: number | null; selectedSlots: number[] } = {
+    draggedPos: null,
+    selectedSlots: [],
+  };
+
+  function onDragStart({
+    position,
+    selectedPositions,
+  }: {
+    position: number | string;
+    selectedPositions: number[];
+  }) {
+    const draggedPos = Number(position);
+    if (Number.isNaN(draggedPos)) return;
+
+    const selectedSlots = selectedPositions
+      .map(Number)
+      .filter((slot) => !Number.isNaN(slot));
+
+    dragContext = {
+      draggedPos,
+      selectedSlots,
+    };
+  }
+
+  function clearDragContext() {
+    dragContext = {
+      draggedPos: null,
+      selectedSlots: [],
+    };
+  }
+
+  function onDragEnd() {
+    clearHighlight();
+    clearDragContext();
+  }
+
+  function resolveDragContext(
+    draggedPosition?: number | string,
+    selectedPositions?: number[]
+  ) {
+    const draggedPosFromPayload = Number(draggedPosition);
+    const selectedSlotsFromPayload = (selectedPositions ?? [])
+      .map(Number)
+      .filter((slot) => !Number.isNaN(slot));
+
+    const hasGroupPayload =
+      selectedSlotsFromPayload.length > 1 &&
+      !Number.isNaN(draggedPosFromPayload) &&
+      selectedSlotsFromPayload.includes(draggedPosFromPayload);
+
+    if (hasGroupPayload) {
+      return {
+        draggedPos: draggedPosFromPayload,
+        selectedSlots: selectedSlotsFromPayload,
+      };
+    }
+
+    return {
+      draggedPos: dragContext.draggedPos,
+      selectedSlots: dragContext.selectedSlots,
+    };
+  }
+
   // ─── Drag highlight ───────────────────────────────────────────────────────
 
   let time: ReturnType<typeof setTimeout>;
-  function onDragEnter({ position }: { position: number | string }) {
+  function onDragEnter({
+    position,
+    draggedPosition,
+    selectedPositions,
+  }: {
+    position: number | string;
+    draggedPosition?: number | string;
+    selectedPositions?: number[];
+  }) {
     clearTimeout(time);
     time = setTimeout(() => {
-      data.highlight = position;
+      const targetPos = Number(position);
+      if (Number.isNaN(targetPos)) {
+        clearHighlight();
+        return;
+      }
+
+      const { draggedPos, selectedSlots } = resolveDragContext(
+        draggedPosition,
+        selectedPositions
+      );
+      const isGroupDrag =
+        selectedSlots.length > 1 &&
+        draggedPos !== null &&
+        selectedSlots.includes(draggedPos);
+
+      if (!isGroupDrag) {
+        data.highlightPositions = [targetPos];
+        return;
+      }
+
+      if (!isGroupMoveValid(draggedPos, targetPos, selectedSlots)) {
+        clearHighlight();
+        return;
+      }
+
+      const offset = targetPos - draggedPos;
+      const targetSlots = selectedSlots.map((slot) => slot + offset);
+      // Opcja A: podświetlamy tylko docelowe sloty spoza bieżącej selekcji.
+      data.highlightPositions = targetSlots.filter(
+        (slot) => !selectedSlots.includes(slot)
+      );
     }, 0);
   }
 
@@ -66,8 +172,8 @@ export async function useEventGame(
 
   /**
    * Sprawdza, czy przesunięcie grupy klocków o `offset` pozycji jest legalne:
-   * – żaden klocek nie wychodzi poza tablicę
-   * – żaden klocek nie „zawija" przez granicę wiersza
+   * - żaden klocek nie wychodzi poza tablicę
+   * - żaden klocek nie "zawija" przez granicę wiersza
    */
   function isGroupMoveValid(
     draggedOriginalPos: number,
@@ -86,7 +192,9 @@ export async function useEventGame(
       const oldRow = Math.floor(pos / c);
       const newRow = Math.floor(newPos / c);
       const rowDiff = newRow - oldRow;
-      const expectedRowDiff = Math.floor((draggedOriginalPos + offset) / c) - Math.floor(draggedOriginalPos / c);
+      const expectedRowDiff =
+        Math.floor((draggedOriginalPos + offset) / c) -
+        Math.floor(draggedOriginalPos / c);
       if (rowDiff !== expectedRowDiff) return false;
     }
     return true;
@@ -109,7 +217,7 @@ export async function useEventGame(
     // Nie rób nic jeśli upuszczono na to samo miejsce
     if (draggedOriginalPos === targetPos) return;
 
-    // Grupowy drag: więcej niż 1 zaznaczony I przeciągany klocek jest w zaznaczeniu
+    // Grupowy drag: więcej niż 1 zaznaczony i przeciągany klocek jest w zaznaczeniu
     const isGroupDrag =
       selectedPositions &&
       selectedPositions.length > 1 &&
@@ -118,10 +226,12 @@ export async function useEventGame(
     if (isGroupDrag && selectedPositions) {
       onGroupSwap(draggedOriginalPos, targetPos, selectedPositions);
     } else {
-      // Pojedynczy swap — zawsze tylko dwa klocki zamieniają się miejscami
+      // Pojedynczy swap - zawsze tylko dwa klocki zamieniają się miejscami
       clearSelection();
       onSingleSwap(draggedOriginalPos, targetPos);
     }
+
+    clearDragContext();
   }
 
   function onSingleSwap(pos1: number, pos2: number) {
@@ -142,7 +252,7 @@ export async function useEventGame(
 
     // Posortuj według slotu aby siatka renderowała się w porządku
     data.shuffledPieces = [...newPieces].sort((a, b) => a.position - b.position);
-    data.highlight = "";
+    clearHighlight();
     data.moves = data.moves + 1;
     clearSelection();
     if (checkIfIsCorrect()) {
@@ -160,7 +270,7 @@ export async function useEventGame(
     if (!pieces) return;
 
     if (!isGroupMoveValid(draggedOriginalPos, targetPos, selectedSlots)) {
-      data.highlight = "";
+      clearHighlight();
       return;
     }
 
@@ -169,8 +279,9 @@ export async function useEventGame(
     const targetSlots = selectedSlots.map((s) => s + offset);
 
     // Klocki, które są w strefie docelowej ale NIE są częścią zaznaczenia
-    const displacedPieces = pieces.filter((p: ImagePieces) =>
-      targetSlots.includes(p.position) && !selectedSlots.includes(p.position)
+    const displacedPieces = pieces.filter(
+      (p: ImagePieces) =>
+        targetSlots.includes(p.position) && !selectedSlots.includes(p.position)
     );
 
     // Klocki na wolnych slotach źródłowych (zwolnione przez grupę)
@@ -179,18 +290,22 @@ export async function useEventGame(
     );
 
     // Przypisz przemieszczonym klockom wolne sloty źródłowe
-    const displacedMapping: DisplacedMapping[] = displacedPieces.map((p: ImagePieces, i: number) => ({
-      piece: p,
-      newSlot: freeSourceSlots[i],
-    }));
+    const displacedMapping: DisplacedMapping[] = displacedPieces.map(
+      (p: ImagePieces, i: number) => ({
+        piece: p,
+        newSlot: freeSourceSlots[i],
+      })
+    );
 
     const newPieces = pieces.map((p: ImagePieces) => {
-      // Klocek z zaznaczonej grupy → przesuń o offset
+      // Klocek z zaznaczonej grupy -> przesuń o offset
       if (selectedSlots.includes(p.position)) {
         return { ...p, position: p.position + offset };
       }
-      // Przemieszczony klocek → dostaje wolny slot
-      const displaced = displacedMapping.find((d: DisplacedMapping) => d.piece.position === p.position);
+      // Przemieszczony klocek -> dostaje wolny slot
+      const displaced = displacedMapping.find(
+        (d: DisplacedMapping) => d.piece.position === p.position
+      );
       if (displaced) {
         return { ...p, position: displaced.newSlot };
       }
@@ -198,7 +313,7 @@ export async function useEventGame(
     });
 
     data.shuffledPieces = [...newPieces].sort((a, b) => a.position - b.position);
-    data.highlight = "";
+    clearHighlight();
     data.moves = data.moves + 1;
     // Po ruchu grupowym aktualizuj selectedPositions do nowych slotów
     data.selectedPositions = targetSlots;
@@ -215,8 +330,11 @@ export async function useEventGame(
     stopStopwatch,
     resetStopwatch,
     onDragEnter,
+    onDragStart,
+    onDragEnd,
     onSwap,
     toggleSelection,
     clearSelection,
+    clearHighlight,
   };
 }

@@ -24,7 +24,7 @@ const data = reactive<GameData>({
   isFinishedModalOpened: false,
   isPauseModalOpened: false,
   shuffledPieces: void 0,
-  highlight: "",
+  highlightPositions: [],
   heightScreen: 0,
   moves: 0,
   selectedPositions: [],
@@ -51,8 +51,11 @@ const {
   resetStopwatch,
   onSwap,
   onDragEnter,
+  onDragStart,
+  onDragEnd,
   toggleSelection,
   clearSelection,
+  clearHighlight,
 } = await useEventGame(props, data, {
   openModal,
 });
@@ -64,6 +67,7 @@ function onPause() {
   data.isPauseModalOpened = true;
   stopStopwatch();
   clearSelection();
+  clearHighlight();
 }
 function onReset() {
   data.moves = 0;
@@ -71,6 +75,7 @@ function onReset() {
   resetStopwatch();
   startStopwatch();
   clearSelection();
+  clearHighlight();
 }
 function onContinue() {
   data.isPauseModalOpened = false;
@@ -147,15 +152,29 @@ onMounted(() => {
     </Transition>
   </Teleport>
   <div class="items-center flex mx-auto w-full flex-col mt-6 px-4">
-    <div class="mb-10 h-[66px]">
-      <img
-        :src="data.imgSrc"
-        class="w-[100px] h-full object-cover rounded cursor-pointer shadow-[0px_0px_23.9px_8px_#0000001A] hover:opacity-70 hover:scale-105 transition duration-200 ease-in-out"
-        :title="$t('Preview')"
-        @click="enlargePreview = true"
-        alt=""
-      />
+    <div
+      class="sticky top-2 z-30 mb-6"
+      :style="{ width: `${WIDTH_GAME * boardScale}px` }"
+    >
+      <div class="grid grid-cols-5 items-center justify-items-center gap-3">
+        <UiButton type="outline" @click="onReset">
+          {{ $t("RESTART") }}
+        </UiButton>
+        <UiButton type="outline" @click="onPause">
+          {{ $t("PAUSE") }}
+        </UiButton>
+        <UiButton type="outline" @click="enlargePreview = true">
+          {{ $t("Preview") }}
+        </UiButton>
+        <div class="text-center text-[#303030] text-xl md:text-2xl">
+          {{ displayMoves }}
+        </div>
+        <div class="text-center text-[#303030] text-xl md:text-2xl">
+          {{ displayTime }}
+        </div>
+      </div>
     </div>
+
     <div
       class="overflow-hidden"
       :style="{
@@ -188,27 +207,18 @@ onMounted(() => {
               :item="item"
               :key="item.position"
               :imgSrc="data.imgSrc"
-              :is-highlight="data.highlight === item.position"
+              :is-highlight="data.highlightPositions.includes(item.position)"
               :is-selected="data.selectedPositions.includes(item.position)"
               :selected-positions="data.selectedPositions"
               @swap="onSwap"
               @drag-enter="onDragEnter"
+              @drag-start="onDragStart"
+              @drag-end="onDragEnd"
               @select="({ position, multi }) => toggleSelection(position, multi)"
             />
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="mt-6 flex justify-between items-center"
-      :style="{ width: `${WIDTH_GAME * boardScale}px` }"
-    >
-      <UiButton type="outline" @click="onReset">{{ $t("RESTART") }}</UiButton>
-      <UiButton type="outline" @click="onPause">{{ $t("PAUSE") }}</UiButton>
-      <div class="text-[#303030] text-2xl">
-        {{ displayMoves }}
-      </div>
-      <div class="text-[#303030] text-2xl">{{ displayTime }}</div>
     </div>
     <!-- Podpowiedź multi-select -->
     <p
