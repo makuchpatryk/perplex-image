@@ -4,6 +4,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     pexelsApiKey: process.env.PEXELS_API_KEY ?? "",
+    supabaseUrl: process.env.SUPABASE_URL ?? "",
+    supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY ?? "",
+    supabaseBucket: process.env.SUPABASE_BUCKET ?? "",
   },
 
   app: {
@@ -82,8 +85,8 @@ export default defineNuxtConfig({
           "default-src 'self'; " +
           "script-src 'self' 'unsafe-inline'; " +
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-          "img-src 'self' data: blob: https://images.pexels.com https://www.pexels.com; " +
-          "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.pexels.com ws: wss:; " +
+          "img-src 'self' data: blob: https://images.pexels.com https://www.pexels.com https://*.supabase.co; " +
+          "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.pexels.com https://*.supabase.co ws: wss:; " +
           "font-src 'self' https://fonts.gstatic.com; " +
           "object-src 'none'; " +
           "base-uri 'self'; " +

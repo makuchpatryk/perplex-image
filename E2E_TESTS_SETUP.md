@@ -7,6 +7,7 @@ Playwright E2E tests have been successfully added to the PerplexImage project!
 ## 📦 What Was Added
 
 ### Files Created:
+
 1. **playwright.config.ts** - Playwright configuration
 2. **tests/e2e/main.spec.ts** - Core functionality tests (31+ tests)
 3. **tests/e2e/advanced.spec.ts** - Advanced tests with fixtures (14 test groups)
@@ -14,9 +15,11 @@ Playwright E2E tests have been successfully added to the PerplexImage project!
 5. **tests/e2e/README.md** - Detailed test documentation
 
 ### Package Updated:
+
 - **@playwright/test** v1.58.2 added to devDependencies
 
 ### Scripts Added to package.json:
+
 - `pnpm test:e2e` - Run all tests
 - `pnpm test:e2e:ui` - Run tests with interactive UI
 - `pnpm test:e2e:debug` - Run tests in debug mode
@@ -30,6 +33,7 @@ pnpm test:e2e
 ```
 
 This will:
+
 - Start the dev server automatically
 - Run tests on Chromium, Firefox, and WebKit browsers
 - Generate an HTML report
@@ -41,6 +45,7 @@ pnpm test:e2e:ui
 ```
 
 This opens an interactive test runner where you can:
+
 - See tests executing in real-time
 - Inspect elements on the page
 - Debug individual tests
@@ -55,6 +60,7 @@ npx playwright show-report
 ```
 
 Opens an HTML report with:
+
 - Test results and timing
 - Screenshots of failures
 - Network traces
@@ -87,6 +93,7 @@ npx playwright test --headed
 ### Test Categories:
 
 **Home Page & Image Selection (6 tests)**
+
 - Load home page
 - Display difficulty options
 - Select difficulty level
@@ -95,6 +102,7 @@ npx playwright test --headed
 - Start game with selections
 
 **Game Page & Puzzle Gameplay (5 tests)**
+
 - Load game page with puzzle pieces
 - Display game sidebar with timer
 - Allow dragging puzzle pieces
@@ -102,40 +110,49 @@ npx playwright test --headed
 - Update move counter
 
 **Game Controls & Navigation (2 tests)**
+
 - Navigate back to home page
 - Display game completion modal
 
 **Responsive Design (3 tests)**
+
 - Mobile viewport (375x667)
 - Tablet viewport (768x1024)
 - Desktop viewport (1920x1080)
 
 **Error Handling (2 tests)**
+
 - Handle loading errors gracefully
 - Handle network timeout gracefully
 
 **Performance (2 tests)**
+
 - Load home page within acceptable time
 - Load game page within acceptable time
 
 **Advanced Game Flow (2 tests with fixtures)**
+
 - Complete game flow from home to game
 - Test all difficulty levels
 
 **Advanced Game Interaction (4 tests with fixtures)**
+
 - Test piece interaction and movement
 - Test pause and resume functionality
 - Test timer functionality
 - Test move counter
 
 **UI & UX Tests (2 tests with fixtures)**
+
 - Test responsive game layout
 - Test image selection flow
 
 **State Management (1 test with fixtures)**
+
 - Test image selection persistence
 
 **Navigation Tests (2 tests with fixtures)**
+
 - Test back navigation from game to home
 - Test direct navigation with ID
 
@@ -154,22 +171,26 @@ npx playwright test --headed
 ## 📚 Test Structure Example
 
 ```typescript
-test('should start game with selected image and difficulty', async ({ page }) => {
-  await page.goto('/');
-  await page.waitForLoadState('networkidle');
-  
+test("should start game with selected image and difficulty", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
   // Select difficulty level
   const option15x23 = page.locator('input[value="15x23"]');
   await option15x23.click();
-  
+
   // Start game
-  const startBtn = page.locator('button').filter({ hasText: /Start|Play|Begin/i });
+  const startBtn = page
+    .locator("button")
+    .filter({ hasText: /Start|Play|Begin/i });
   if (await startBtn.isVisible()) {
     await startBtn.click();
     await page.waitForURL(/\/game\//);
-    
+
     // Verify game started
-    expect(page.url()).toContain('/game/');
+    expect(page.url()).toContain("/game/");
   }
 });
 ```
@@ -179,7 +200,7 @@ test('should start game with selected image and difficulty', async ({ page }) =>
 ### Using Custom Fixtures
 
 ```typescript
-test('complete game flow', async ({
+test("complete game flow", async ({
   page,
   navigateToHome,
   selectDifficulty9x13,
@@ -188,15 +209,15 @@ test('complete game flow', async ({
   await navigateToHome();
   await selectDifficulty9x13();
   await startGame();
-  
-  expect(page.url()).toContain('/game/');
+
+  expect(page.url()).toContain("/game/");
 });
 ```
 
 ### Taking Screenshots
 
 ```typescript
-await page.screenshot({ path: 'screenshot.png' });
+await page.screenshot({ path: "screenshot.png" });
 ```
 
 ### Generating Locators
@@ -220,24 +241,29 @@ This opens a tool to interactively generate test code.
 ## 🐛 Troubleshooting
 
 ### Tests timeout
+
 ```bash
 # Increase timeout
 npx playwright test --timeout=60000
 ```
 
 ### Browser not starting
+
 ```bash
 # Install browsers
 npx playwright install
 ```
 
 ### API fails
+
 Check that:
+
 - Dev server is running on http://localhost:3000
 - Pexels API key is valid
 - Internet connection is active
 
 ### Tests are too slow
+
 ```bash
 # Run on specific browser only
 npx playwright test --project=chromium
@@ -272,4 +298,3 @@ npx playwright test --project=chromium
 Created: February 23, 2026
 Playwright Version: 1.58.2
 Project: PerplexImage (Nuxt 3)
-

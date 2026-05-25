@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 import { LevelsKeys } from "~/modules/core/constants";
 import { useImagesStore } from "~/modules/core/store/images";
-import type { PexelPhoto } from "~/modules/core/types";
+import type { ImagePhoto } from "~/modules/core/types";
 
 const { photos, selectedImage } = storeToRefs(useImagesStore());
 const { setSelectedImage, randomSelectImage, getImages } = useImagesStore();
@@ -28,7 +28,7 @@ function onChangeRadio(e: Event) {
     .value as unknown as LevelsKeys;
 }
 
-function onSelectImage(data: PexelPhoto) {
+function onSelectImage(data: ImagePhoto) {
   setSelectedImage(data).then(() => {
     onCloseImage();
   });
@@ -46,7 +46,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="justify-center items-center flex mx-auto w-full max-w-[700px] flex-col px-4 pb-8 md:pb-10">
+  <div
+    class="justify-center items-center flex mx-auto w-full max-w-[700px] flex-col px-4 pb-8 md:pb-10"
+  >
     <span class="text-3xl font-semibold text-center text-[#605F5B] mb-5">{{
       $t("A tile-sliding picture game.")
     }}</span>
@@ -54,15 +56,15 @@ onMounted(() => {
       $t("Rearrange tiles by dragging to put the image together.")
     }}</span>
     <div class="relative">
-      <img
-        v-if="!loading && selectedImage?.src?.large"
-        class="w-full shadow-[10px_12px_25px_2px_#00000026]"
-        :src="selectedImage?.src?.large || ''"
-      />
       <span
-        v-else
-        class="block w-full h-[466px] bg-[length:400%] animate-moving bg-gradient-to-r from-[#777777] to-[#bbbbbb]"
-      ></span>
+        class="block w-full min-h-[350px] bg-[length:400%] animate-moving bg-gradient-to-r from-[#777777] to-[#bbbbbb]"
+      >
+      <img
+          v-show="!loading && selectedImage?.src?.large"
+          class="w-full shadow-[10px_12px_25px_2px_#00000026]"
+          :src="selectedImage?.src?.large || '/_nuxt/assets/placeholder.webp'"
+      />
+      </span>
       <div
         class="w-full absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] flex flex-col items-center justify-center"
       >

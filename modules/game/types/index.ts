@@ -1,8 +1,8 @@
-import type { ImagePieces, PexelPhoto } from "~/modules/core/types";
+import type { ImagePieces, ImagePhoto } from "~/modules/core/types";
 import { LevelsKeys } from "~/modules/core/constants";
 
 export interface GameProps {
-  selectedImage: PexelPhoto;
+  selectedImage: ImagePhoto;
   level: LevelsKeys;
 }
 

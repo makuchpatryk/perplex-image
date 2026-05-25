@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<GameProps>(), {
 });
 
 const { t } = useI18n();
-const enlargePreview = ref(false)
+const enlargePreview = ref(false);
 
 const { imageToBase64 } = await useImage();
 
@@ -133,8 +133,13 @@ onMounted(() => {
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm cursor-pointer"
         @click.self="enlargePreview = false"
       >
-        <div class="relative flex flex-col items-center gap-3 pointer-events-none">
-          <span aria-hidden="true" class="pointer-events-none select-none bg-white/20 text-white text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full backdrop-blur-md border border-white/30">
+        <div
+          class="relative flex flex-col items-center gap-3 pointer-events-none"
+        >
+          <span
+            aria-hidden="true"
+            class="pointer-events-none select-none bg-white/20 text-white text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full backdrop-blur-md border border-white/30"
+          >
             {{ $t("Preview") }}
           </span>
           <img
@@ -146,7 +151,9 @@ onMounted(() => {
             :aria-label="$t('Close preview')"
             class="pointer-events-auto absolute -top-2 -right-2 w-7 h-7 flex items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/40 transition backdrop-blur-md border border-white/30 text-sm font-bold"
             @click="enlargePreview = false"
-          >✕</button>
+          >
+            ✕
+          </button>
         </div>
       </div>
     </Transition>
@@ -183,7 +190,9 @@ onMounted(() => {
       }"
     >
       <div
-        :class="['flex justify-start backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]']"
+        :class="[
+          'flex justify-start backdrop-blur-[5%] shadow-[0px_0px_23.9px_8px_#0000001A]',
+        ]"
         :style="{
           transform: `scale(${boardScale})`,
           transformOrigin: 'top left',
@@ -197,7 +206,7 @@ onMounted(() => {
           }"
         >
           <div
-            class="flex flex-wrap "
+            class="flex flex-wrap"
             :style="{
               minWidth: `${WIDTH_GAME}px`,
             }"
@@ -214,7 +223,9 @@ onMounted(() => {
               @drag-enter="onDragEnter"
               @drag-start="onDragStart"
               @drag-end="onDragEnd"
-              @select="({ position, multi }) => toggleSelection(position, multi)"
+              @select="
+                ({ position, multi }) => toggleSelection(position, multi)
+              "
             />
           </div>
         </div>
@@ -225,7 +236,11 @@ onMounted(() => {
       class="mt-3 text-xs text-[#aaa] text-center select-none"
       :style="{ width: `${WIDTH_GAME * boardScale}px` }"
     >
-      {{ $t("Hold Ctrl or Shift and click tiles to select multiple and drag a group") }}
+      {{
+        $t(
+          "Hold Ctrl or Shift and click tiles to select multiple and drag a group"
+        )
+      }}
     </p>
   </div>
 </template>

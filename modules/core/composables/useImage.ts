@@ -1,4 +1,4 @@
-export async function useImage() {
+export function useImage() {
   const imageToBase64 = (
     url: string,
     callback: (a: string | ArrayBuffer | null) => void

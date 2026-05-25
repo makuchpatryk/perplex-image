@@ -1,6 +1,6 @@
 <template>
   <div
-      :class="[
+    :class="[
       'min-h-lvh overflow-x-hidden p-4',
       'bg-[length:200%] animate-moving bg-gradient-to-r from-[#FBFBFB] to-[#bfbfbf]',
     ]"
@@ -17,10 +17,8 @@
 </template>
 
 <style lang="css">
-
 * {
   font-family: "League Spartan", sans-serif;
 }
 </style>
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>

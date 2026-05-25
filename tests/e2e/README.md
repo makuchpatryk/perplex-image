@@ -38,6 +38,7 @@ The Playwright configuration is defined in `playwright.config.ts`:
 Main test suite covering essential features:
 
 #### Home Page & Image Selection
+
 - ✅ Load home page and verify title
 - ✅ Display difficulty level options
 - ✅ Select difficulty level
@@ -46,6 +47,7 @@ Main test suite covering essential features:
 - ✅ Start game with selected image and difficulty
 
 #### Game Page & Puzzle Gameplay
+
 - ✅ Load game page with puzzle pieces
 - ✅ Display game sidebar with timer
 - ✅ Allow dragging puzzle pieces
@@ -53,19 +55,23 @@ Main test suite covering essential features:
 - ✅ Update move counter when pieces are swapped
 
 #### Game Controls & Navigation
+
 - ✅ Navigate back to home page
 - ✅ Display game completion modal
 
 #### Responsive Design
+
 - ✅ Mobile viewport (375x667)
 - ✅ Tablet viewport (768x1024)
 - ✅ Desktop viewport (1920x1080)
 
 #### Error Handling
+
 - ✅ Handle loading errors gracefully
 - ✅ Handle network timeout gracefully
 
 #### Performance
+
 - ✅ Load home page within acceptable time
 - ✅ Load game page within acceptable time
 
@@ -74,23 +80,28 @@ Main test suite covering essential features:
 Advanced test suite using custom fixtures for cleaner code:
 
 #### Game Flow Tests
+
 - ✅ Complete game flow from home to game
 - ✅ Test all difficulty levels
 
 #### Game Interaction Tests
+
 - ✅ Test piece interaction and movement
 - ✅ Test pause and resume functionality
 - ✅ Test timer functionality
 - ✅ Test move counter
 
 #### UI & UX Tests
+
 - ✅ Test responsive game layout
 - ✅ Test image selection flow
 
 #### State Management Tests
+
 - ✅ Test image selection persistence
 
 #### Navigation Tests
+
 - ✅ Test back navigation
 - ✅ Test direct navigation with ID
 
@@ -120,6 +131,7 @@ pnpm test:e2e:ui
 ```
 
 This opens the Playwright Inspector UI where you can:
+
 - See test execution step-by-step
 - Pick elements on the page
 - View test logs and traces
@@ -178,11 +190,11 @@ This opens an interactive HTML report with test results, screenshots, and traces
 ### Basic Test Example
 
 ```typescript
-test('should load home page', async ({ page }) => {
-  await page.goto('/');
-  await page.waitForLoadState('networkidle');
-  
-  const title = page.locator('text=Perplex Image');
+test("should load home page", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const title = page.locator("text=Perplex Image");
   await expect(title).toBeVisible();
 });
 ```
@@ -190,7 +202,7 @@ test('should load home page', async ({ page }) => {
 ### Test with Fixtures Example
 
 ```typescript
-test('test game flow', async ({
+test("test game flow", async ({
   page,
   navigateToHome,
   selectDifficulty9x13,
@@ -199,19 +211,21 @@ test('test game flow', async ({
   await navigateToHome();
   await selectDifficulty9x13();
   await startGame();
-  
-  expect(page.url()).toContain('/game/');
+
+  expect(page.url()).toContain("/game/");
 });
 ```
 
 ## 📊 Test Metrics
 
 ### Total Test Count
+
 - **main.spec.ts**: 13 test groups
 - **advanced.spec.ts**: 14 test groups
 - **Total**: 27+ comprehensive tests
 
 ### Coverage Areas
+
 1. ✅ Home page functionality
 2. ✅ Image selection
 3. ✅ Game initialization
@@ -227,21 +241,27 @@ test('test game flow', async ({
 ## 🎯 Key Testing Strategies
 
 ### 1. **User Flow Testing**
+
 Tests simulate actual user journeys from home page through game completion.
 
 ### 2. **Interaction Testing**
+
 Tests verify drag-and-drop, button clicks, and form inputs work correctly.
 
 ### 3. **Responsive Testing**
+
 Tests run on multiple viewport sizes to ensure mobile, tablet, and desktop compatibility.
 
 ### 4. **Performance Testing**
+
 Tests measure page load times and ensure acceptable performance.
 
 ### 5. **Error Handling**
+
 Tests verify application handles API failures and network timeouts gracefully.
 
 ### 6. **State Management**
+
 Tests verify selected images and game state persist across navigation.
 
 ## 🛠️ Debugging Tests
@@ -281,6 +301,7 @@ This launches Playwright Inspector allowing you to step through tests.
 ## 📱 Browser Support
 
 Tests run on:
+
 - **Chromium** - Desktop Chrome/Edge compatible
 - **Firefox** - Desktop Firefox compatible
 - **WebKit** - Safari compatible
@@ -290,15 +311,18 @@ Each browser is tested independently, ensuring cross-browser compatibility.
 ## ⚙️ Configuration Details
 
 ### Timeouts
+
 - **Navigation**: 30 seconds
 - **API Calls**: 30 seconds
 - **Default Action**: 5 seconds
 
 ### Retries
+
 - **CI Environment**: 2 retries
 - **Local Development**: 0 retries (fail fast)
 
 ### Parallelization
+
 - **Local**: All workers available
 - **CI**: 1 worker (slower but more stable)
 
@@ -308,39 +332,43 @@ Tests use various locator strategies:
 
 ```typescript
 // By text content
-page.locator('text=Perplex Image')
+page.locator("text=Perplex Image");
 
 // By role
-page.locator('[role="dialog"]')
+page.locator('[role="dialog"]');
 
 // By CSS class
-page.locator('[class*="piece"]')
+page.locator('[class*="piece"]');
 
 // By attribute
-page.locator('input[value="9x13"]')
+page.locator('input[value="9x13"]');
 
 // Combined
-page.locator('button').filter({ hasText: /Start|Play/i })
+page.locator("button").filter({ hasText: /Start|Play/i });
 ```
 
 ## 🐛 Troubleshooting
 
 ### Tests timeout
+
 - Increase `navigationTimeout` in config
 - Check if dev server is running on port 3000
 - Check network connectivity
 
 ### Selectors not found
+
 - Use `npx playwright codegen` to generate locators
 - Use `--ui` mode to inspect elements
 - Check if element is visible before interacting
 
 ### API fails
+
 - Ensure Pexels API key is valid in `server/api/get-images.ts`
 - Check internet connection
 - API rate limiting might occur
 
 ### Tests fail on CI
+
 - Ensure dev server starts properly
 - Add longer waits for slower environments
 - Check for timezone-dependent tests
@@ -356,6 +384,7 @@ To run tests in CI pipeline:
 ```
 
 Tests automatically:
+
 - Start dev server
 - Run on all browsers
 - Retry on failure
@@ -388,4 +417,3 @@ Tests automatically:
 Created: February 23, 2026
 Framework: Playwright v1.58.2
 Project: PerplexImage (Nuxt 3)
-

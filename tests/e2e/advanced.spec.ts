@@ -1,10 +1,14 @@
 import { test, expect, mockPhoto, mockApiRoutes } from "./fixtures";
 
 test.describe("Game page – layout", () => {
-  test("renders correct number of pieces and UI controls for 9x13", async ({ gamePage }) => {
+  test("renders correct number of pieces and UI controls for 9x13", async ({
+    gamePage,
+  }) => {
     // mockPhoto: height=800, width=1200 -> cols=9, rows=round(800/1200*9)=6 -> 54 pieces
     await expect(gamePage.locator("[draggable='true']")).toHaveCount(54);
-    await expect(gamePage.getByRole("button", { name: /Preview/i })).toBeVisible();
+    await expect(
+      gamePage.getByRole("button", { name: /Preview/i })
+    ).toBeVisible();
     await expect(gamePage.getByText(/0 Move/)).toBeVisible();
     await expect(gamePage.getByText(/\d{2}:\d{2}:\d{2}/)).toBeVisible();
   });
@@ -23,7 +27,9 @@ test.describe("Game page – layout", () => {
 });
 
 test.describe("Game page – pause flow", () => {
-  test("pause modal opens, shows Pause label and Continue button, then closes", async ({ gamePage }) => {
+  test("pause modal opens, shows Pause label and Continue button, then closes", async ({
+    gamePage,
+  }) => {
     await gamePage.getByRole("button", { name: /PAUSE/i }).click();
     await expect(gamePage.locator("div.fixed")).toBeVisible();
     await expect(gamePage.locator("div.text-7xl")).toContainText("Pause");

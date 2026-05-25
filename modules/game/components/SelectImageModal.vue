@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { PexelPhoto } from "~/modules/core/types";
+import type { ImagePhoto } from "~/modules/core/types";
 
 interface Props {
   isModalOpened: boolean;
-  photos: PexelPhoto[];
+  photos: ImagePhoto[];
 }
 
 withDefaults(defineProps<Props>(), {
@@ -15,7 +15,7 @@ const emit = defineEmits(["submit", "close"]);
 const onCloseModal = () => {
   emit("close");
 };
-const onClick = (data: PexelPhoto) => {
+const onClick = (data: ImagePhoto) => {
   emit("submit", data);
 };
 </script>
@@ -36,7 +36,8 @@ const onClick = (data: PexelPhoto) => {
             <img
               class="object-cover w-full h-full max-h-40"
               :src="photo.src.medium"
-             alt="Image"/>
+              alt="Image"
+            />
           </div>
         </div>
       </div>

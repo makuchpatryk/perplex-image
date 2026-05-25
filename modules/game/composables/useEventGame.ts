@@ -1,3 +1,4 @@
+import { computed } from "vue";
 import type { GameData, GameProps } from "../types";
 import type { ImagePieces, DisplacedMapping } from "~core/types";
 import { Levels } from "~/modules/core/constants";
@@ -6,13 +7,13 @@ export interface Options {
   openModal: () => void;
 }
 
-export async function useEventGame(
+export function useEventGame(
   props: GameProps,
   data: GameData,
   { openModal }: Options
 ) {
   const { startStopwatch, stopStopwatch, resetStopwatch, displayTime } =
-    await useStopwatch();
+    useStopwatch();
 
   /** Liczba kolumn na podstawie wybranego poziomu */
   const cols = computed(() => Number(Levels[props.level]));
@@ -239,19 +240,28 @@ export async function useEventGame(
     if (!pieces) return;
 
     // Znajdź klocek, który aktualnie leży na slocie pos1 i pos2
-    const idx1 = pieces.findIndex((item: ImagePieces) => item.position === pos1);
-    const idx2 = pieces.findIndex((item: ImagePieces) => item.position === pos2);
+    const idx1 = pieces.findIndex(
+      (item: ImagePieces) => item.position === pos1
+    );
+    const idx2 = pieces.findIndex(
+      (item: ImagePieces) => item.position === pos2
+    );
 
     if (idx1 === -1 || idx2 === -1) return;
 
     const newPieces = [...pieces];
     // Zamień pozycje (sloty) między klockami
     const tmp = newPieces[idx1].position;
-    newPieces[idx1] = { ...newPieces[idx1], position: newPieces[idx2].position };
+    newPieces[idx1] = {
+      ...newPieces[idx1],
+      position: newPieces[idx2].position,
+    };
     newPieces[idx2] = { ...newPieces[idx2], position: tmp };
 
     // Posortuj według slotu aby siatka renderowała się w porządku
-    data.shuffledPieces = [...newPieces].sort((a, b) => a.position - b.position);
+    data.shuffledPieces = [...newPieces].sort(
+      (a, b) => a.position - b.position
+    );
     clearHighlight();
     data.moves = data.moves + 1;
     clearSelection();
@@ -312,7 +322,9 @@ export async function useEventGame(
       return p;
     });
 
-    data.shuffledPieces = [...newPieces].sort((a, b) => a.position - b.position);
+    data.shuffledPieces = [...newPieces].sort(
+      (a, b) => a.position - b.position
+    );
     clearHighlight();
     data.moves = data.moves + 1;
     // Po ruchu grupowym aktualizuj selectedPositions do nowych slotów

@@ -1,10 +1,9 @@
 import { test as base, type Page } from "@playwright/test";
 
-/** A minimal PexelPhoto fixture served via the local dev-server image. */
+/** A minimal ImagePhoto fixture served via the local dev-server image. */
 export const mockPhoto = {
   id: 1,
   alt: "Test photo",
-  avg_color: "#808080",
   height: 800,
   width: 1200,
   liked: false,
@@ -34,7 +33,7 @@ export const mockPhotosResponse = {
 };
 
 /**
- * Intercept the Pexels API proxy routes so tests never call the real API.
+ * Intercept the API routes so tests never call the real API.
  *
  * IMPORTANT: register the more-specific `get-image` route FIRST (lower priority)
  * and `get-images` LAST (higher priority), because Playwright's last-registered

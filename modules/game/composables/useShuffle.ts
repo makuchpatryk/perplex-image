@@ -1,9 +1,10 @@
+import { computed } from "vue";
 import { Levels, WIDTH_GAME } from "~/modules/core/constants";
 import type { ImagePieces } from "~/modules/core/types";
 import type { GameData, GameProps } from "../types";
 
-async function useShuffle(props: GameProps, data: GameData) {
-  const { shuffle } = await useImage();
+function useShuffle(props: GameProps, data: GameData) {
+  const { shuffle } = useImage();
 
   const heightElement = computed<number>(
     () =>

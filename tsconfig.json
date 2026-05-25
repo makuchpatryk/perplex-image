@@ -1,17 +1,21 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
-  "includes": ["types/*.d.ts"],
+  "include": ["types/*.d.ts"],
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "lib": ["es5", "es6", "dom", "dom.iterable"],
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
     "paths": {
       "~/*": ["./*"],
       "~core/*": ["./modules/core/*"],
       "~ui/*": ["./modules/ui/*"],
-      "~game/*": ["./modules/game/*"]
+      "~game/*": ["./modules/game/*"],
+      "@core/*": ["./modules/core/*"],
+      "@ui/*": ["./modules/ui/*"],
+      "@game/*": ["./modules/game/*"],
+      "#imports": ["./types/nuxt-icon.d.ts"]
     }
   }
 }
