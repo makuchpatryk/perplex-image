@@ -1,6 +1,6 @@
 # PerplexImage
 
-Puzzle game built with Nuxt 3. Players complete image puzzles fetched from Pexels API with drag-and-drop gameplay, timers, and move counters.
+Puzzle game built with Nuxt 3. Players complete image puzzles fetched from Supabase with drag-and-drop gameplay, timers, and move counters.
 
 ## Quick Start
 
@@ -17,7 +17,7 @@ Open [http://localhost:3000](http://localhost:3000)
 - **Drag-and-drop gameplay:** Move puzzle pieces to complete the image
 - **Real-time stats:** Timer and move counter
 - **Responsive design:** Works on mobile, tablet, and desktop
-- **Image selection:** Browse and select from Pexels API
+- **Image selection:** Browse and select
 - **Game controls:** Pause, reset, and view progress
 
 ## Tech Stack
@@ -28,7 +28,7 @@ Open [http://localhost:3000](http://localhost:3000)
 - **Tailwind CSS** for styling
 - **Playwright** for E2E testing
 - **Vitest** for unit testing
-- **Pexels API** for puzzle images
+- **Supabase** for puzzle images
 
 ## Commands
 
@@ -53,16 +53,9 @@ pnpm typecheck        # TypeScript validation
 /tests
   /e2e         - Playwright E2E tests
   /units       - Vitest unit tests
-/server/api    - Backend API routes (Pexels proxy)
+/server/api    - Backend API routes (Supabase proxy)
 ```
 
-## Environment Setup
-
-Requires `PEXELS_API_KEY` environment variable. Add to `.env`:
-
-```
-PEXELS_API_KEY=your_pexels_api_key
-```
 
 ## Development
 
