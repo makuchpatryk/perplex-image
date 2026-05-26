@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useImagesStore } from "~/modules/core/store/images";
-import type { LevelsKeys } from "~/modules/core/constants";
+import { useImagesStore } from "@core/store/images";
+import type { LevelsKeys } from "@core/constants";
 
 const route = useRoute();
 const { getImage } = useImagesStore();

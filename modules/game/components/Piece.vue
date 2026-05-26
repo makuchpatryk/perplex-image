@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { WIDTH_GAME } from "../../core/constants";
-import type { ImagePieces } from "~/modules/core/types";
+import { WIDTH_GAME } from "@core/constants";
+import type { ImagePieces } from "@core/types";
 
 interface Props {
   item: ImagePieces;
@@ -131,6 +131,7 @@ const onPieceClick = (evt: MouseEvent, position: number) => {
     </div>
     <div
       draggable="true"
+      data-testid="puzzle-piece"
       class="overflow-hidden"
       @dragstart="startDrag($event, String(item.position), selectedPositions)"
       @dragend="emit('drag-end')"

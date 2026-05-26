@@ -202,7 +202,7 @@ test.describe("Drag & Drop – pojedynczy klocek", () => {
     await dragPiece(gamePage, 4, 11);
 
     // Modal końca gry NIE powinien się pojawić
-    await expect(gamePage.locator("div.fixed")).not.toBeVisible();
+    await expect(gamePage.getByTestId("finish-modal")).not.toBeVisible();
     expect(await pieces(gamePage).count()).toBeGreaterThan(0);
   });
 });

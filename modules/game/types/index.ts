@@ -1,5 +1,5 @@
-import type { ImagePieces, ImagePhoto } from "~/modules/core/types";
-import { LevelsKeys } from "~/modules/core/constants";
+import type { ImagePieces, ImagePhoto } from "@core/types";
+import { LevelsKeys } from "@core/constants";
 
 export interface GameProps {
   selectedImage: ImagePhoto;

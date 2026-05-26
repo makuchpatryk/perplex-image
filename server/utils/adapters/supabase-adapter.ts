@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import type { ImagePhoto } from "~/modules/core/types";
+import type { ImagePhoto } from "@core/types";
 import type { ImageAdapter } from "./image-adapter";
 
 interface SupabaseConfig {
@@ -24,7 +24,13 @@ export class SupabaseImageAdapter implements ImageAdapter {
   private cachedFiles: Array<{ name: string }> | null = null;
 
   constructor(supabaseUrl: string, supabaseKey: string, bucketName: string) {
-    if (!supabaseUrl || !supabaseKey || !bucketName) {
+    this.supabaseUrl = supabaseUrl;
+    this.supabaseKey = supabaseKey;
+    this.bucketName = bucketName;
+  }
+
+  private validateConfig() {
+    if (!this.supabaseUrl || !this.supabaseKey || !this.bucketName) {
       throw createError({
         statusCode: 500,
         statusMessage: "Internal Server Error",
@@ -32,10 +38,6 @@ export class SupabaseImageAdapter implements ImageAdapter {
           "Missing Supabase config. Set SUPABASE_URL, SUPABASE_SERVICE_KEY, SUPABASE_BUCKET.",
       });
     }
-
-    this.supabaseUrl = supabaseUrl;
-    this.supabaseKey = supabaseKey;
-    this.bucketName = bucketName;
   }
 
   private getClient() {
@@ -91,6 +93,8 @@ export class SupabaseImageAdapter implements ImageAdapter {
   }
 
   async getImage(id: number): Promise<ImagePhoto> {
+    this.validateConfig();
+
     if (!Number.isInteger(id) || id < 0) {
       throw createError({
         statusCode: 400,
@@ -128,6 +132,8 @@ export class SupabaseImageAdapter implements ImageAdapter {
   }
 
   async getImages(): Promise<ImagePhoto[]> {
+    this.validateConfig();
+
     try {
       const files = await this.fetchFiles();
       const supabase = this.getClient();

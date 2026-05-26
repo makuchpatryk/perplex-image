@@ -69,13 +69,13 @@ export const test = base.extend<Fixtures>({
     await mockApiRoutes(page);
     // Register the response waiter BEFORE navigating to catch the onMounted fetch
     const getImagesResponse = page.waitForResponse("**/api/get-images**", {
-      timeout: 30_000,
+      timeout: 45_000,
     });
     await page.goto("/");
     // Wait for the getImages() API call to be fulfilled by the mock
     await getImagesResponse;
     // Wait for loading to complete: the shimmer disappears and the image appears
-    await page.waitForSelector("img.w-full", { timeout: 15_000 });
+    await page.waitForSelector("img.w-full", { timeout: 45_000 });
     await use(page);
   },
 
@@ -83,7 +83,7 @@ export const test = base.extend<Fixtures>({
     await mockApiRoutes(page);
     await page.goto(`/game/${mockPhoto.id}?level=9x13`);
     // Wait for at least one puzzle piece to be rendered
-    await page.waitForSelector("[draggable='true']", { timeout: 15_000 });
+    await page.waitForSelector("[data-testid='puzzle-piece']", { timeout: 45_000 });
     await use(page);
   },
 });

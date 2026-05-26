@@ -50,7 +50,16 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    vueI18n: "./i18n.config.ts",
+    locales: [{ code: "en", name: "English" }],
+    defaultLocale: "en",
+    strategy: "no_prefix",
+    detectBrowserLanguage: false,
+  },
+
+  alias: {
+    "@core": new URL("./modules/core", import.meta.url).pathname,
+    "@ui": new URL("./modules/ui", import.meta.url).pathname,
+    "@game": new URL("./modules/game", import.meta.url).pathname,
   },
 
   vite: {
@@ -86,8 +95,9 @@ export default defineNuxtConfig({
           "script-src 'self' 'unsafe-inline'; " +
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
           "img-src 'self' data: blob: https://images.pexels.com https://www.pexels.com https://*.supabase.co; " +
-          "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.pexels.com https://*.supabase.co ws: wss:; " +
+            "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://images.pexels.com https://*.supabase.co https://api.iconify.design ws: wss:; " +
           "font-src 'self' https://fonts.gstatic.com; " +
+          "frame-src 'self'; " +
           "object-src 'none'; " +
           "base-uri 'self'; " +
           "form-action 'self'; " +

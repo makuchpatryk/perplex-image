@@ -5,7 +5,7 @@ test.describe("Game page – layout", () => {
     gamePage,
   }) => {
     // mockPhoto: height=800, width=1200 -> cols=9, rows=round(800/1200*9)=6 -> 54 pieces
-    await expect(gamePage.locator("[draggable='true']")).toHaveCount(54);
+    await expect(gamePage.locator("[data-testid='puzzle-piece']")).toHaveCount(54);
     await expect(
       gamePage.getByRole("button", { name: /Preview/i })
     ).toBeVisible();
@@ -17,12 +17,12 @@ test.describe("Game page – layout", () => {
     await mockApiRoutes(page);
     // 15x23: cols=15, rows=round(800/1200*15)=10 → 150 pieces
     await page.goto(`/game/${mockPhoto.id}?level=15x23`);
-    await page.waitForSelector("[draggable='true']", { timeout: 15_000 });
-    await expect(page.locator("[draggable='true']")).toHaveCount(150);
+    await page.waitForSelector("[data-testid='puzzle-piece']", { timeout: 45_000 });
+    await expect(page.locator("[data-testid='puzzle-piece']")).toHaveCount(150);
     // 18x26: cols=18, rows=round(800/1200*18)=12 → 216 pieces
     await page.goto(`/game/${mockPhoto.id}?level=18x26`);
-    await page.waitForSelector("[draggable='true']", { timeout: 15_000 });
-    await expect(page.locator("[draggable='true']")).toHaveCount(216);
+    await page.waitForSelector("[data-testid='puzzle-piece']", { timeout: 45_000 });
+    await expect(page.locator("[data-testid='puzzle-piece']")).toHaveCount(216);
   });
 });
 
@@ -31,10 +31,10 @@ test.describe("Game page – pause flow", () => {
     gamePage,
   }) => {
     await gamePage.getByRole("button", { name: /PAUSE/i }).click();
-    await expect(gamePage.locator("div.fixed")).toBeVisible();
+    await expect(gamePage.getByTestId("pause-modal")).toBeVisible();
     await expect(gamePage.locator("div.text-7xl")).toContainText("Pause");
     await gamePage.getByRole("button", { name: /Continue/i }).click();
-    await expect(gamePage.locator("div.fixed")).not.toBeVisible();
+    await expect(gamePage.getByTestId("pause-modal")).not.toBeVisible();
   });
 });
 

@@ -9,12 +9,22 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./tests/units/setup.ts"],
     include: ["tests/units/**/*.test.ts"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html", "lcov"],
+      exclude: [
+        "node_modules/",
+        "tests/",
+        "**/*.config.*",
+        "**/*.d.ts",
+      ],
+    },
   },
   resolve: {
     alias: [
       {
         find: "@",
-        replacement: fileURLToPath(new URL("./src", import.meta.url)),
+        replacement: fileURLToPath(new URL(".", import.meta.url)),
       },
       {
         find: "@core",

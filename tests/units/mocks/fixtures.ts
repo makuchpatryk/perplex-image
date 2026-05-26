@@ -1,5 +1,5 @@
-import type { ImagePieces } from "~/modules/core/types";
-import type { GameData } from "~/modules/game/types";
+import type { ImagePieces } from "@core/types";
+import type { GameData } from "@game/types";
 
 /**
  * Create test pieces array. Each piece has position, originalIndex, and other required fields.

@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import type { GameData, GameProps } from "../types";
-import type { ImagePieces, DisplacedMapping } from "~core/types";
-import { Levels } from "~/modules/core/constants";
+import type { ImagePieces, DisplacedMapping } from "@core/types";
+import { Levels } from "@core/constants";
 
 export interface Options {
   openModal: () => void;

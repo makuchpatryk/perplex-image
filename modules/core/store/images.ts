@@ -3,7 +3,7 @@ import type {
   ImagePieces,
   ImagePhoto,
   ResponseImage,
-} from "~/modules/core/types";
+} from "@core/types";
 
 interface State {
   shuffledPieces: ImagePieces[];

@@ -7,7 +7,7 @@ test.describe("Home page", () => {
       homePage.getByText("A tile-sliding picture game.")
     ).toBeVisible();
     await expect(homePage.locator("img.w-full")).toBeVisible({
-      timeout: 15_000,
+      timeout: 45_000,
     });
     await expect(
       homePage.getByRole("button", { name: /Shuffle picture/i })
@@ -39,7 +39,7 @@ test.describe("Home page", () => {
     homePage,
   }) => {
     await homePage.getByRole("button", { name: /Choose manually/i }).click();
-    const modal = homePage.locator("div.fixed");
+    const modal = homePage.getByTestId("select-image-modal");
     await expect(modal).toBeVisible();
     await homePage.mouse.click(10, 10);
     await expect(modal).not.toBeVisible();

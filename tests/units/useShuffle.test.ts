@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useShuffle } from "../../modules/game/composables/useShuffle";
 import { LevelsKeys } from "../../modules/core/constants";
-import type { ImagePhoto, ImagePieces } from "~core/types";
+import type { ImagePhoto, ImagePieces } from "@core/types";
 
 describe("useShuffle", () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

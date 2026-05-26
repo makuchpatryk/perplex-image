@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import { Levels, WIDTH_GAME } from "~/modules/core/constants";
-import type { ImagePieces } from "~/modules/core/types";
+import { Levels, WIDTH_GAME } from "@core/constants";
+import type { ImagePieces } from "@core/types";
 import type { GameData, GameProps } from "../types";
 
 function useShuffle(props: GameProps, data: GameData) {

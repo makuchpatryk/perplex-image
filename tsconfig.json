@@ -9,11 +9,17 @@
     "moduleResolution": "bundler",
     "paths": {
       "~/*": ["./*"],
+      "~core": ["./modules/core"],
       "~core/*": ["./modules/core/*"],
+      "~ui": ["./modules/ui"],
       "~ui/*": ["./modules/ui/*"],
+      "~game": ["./modules/game"],
       "~game/*": ["./modules/game/*"],
+      "@core": ["./modules/core"],
       "@core/*": ["./modules/core/*"],
+      "@ui": ["./modules/ui"],
       "@ui/*": ["./modules/ui/*"],
+      "@game": ["./modules/game"],
       "@game/*": ["./modules/game/*"],
       "#imports": ["./types/nuxt-icon.d.ts"]
     }

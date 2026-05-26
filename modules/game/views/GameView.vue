@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LevelsKeys, WIDTH_GAME } from "~/modules/core/constants";
+import { LevelsKeys, WIDTH_GAME } from "@core/constants";
 import type { GameProps, GameData } from "../types";
 
 const { width: windowWidth } = useWindowSize();
@@ -85,10 +85,12 @@ function onContinue() {
 watch(
   () => props.selectedImage,
   (value) => {
-    data.height = value.height;
-    data.width = value.width;
-    data.url = value.src.large;
-    data.heightScreen = Math.round((value.height / value.width) * WIDTH_GAME);
+    if (value) {
+      data.height = value.height;
+      data.width = value.width;
+      data.url = value.src.large;
+      data.heightScreen = Math.round((value.height / value.width) * WIDTH_GAME);
+    }
   },
   {
     immediate: true,

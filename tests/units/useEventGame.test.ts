@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useEventGame } from "../../modules/game/composables/useEventGame";
 import { LevelsKeys } from "../../modules/core/constants";
 import { ref } from "vue";
-import type { ImagePhoto, ImagePieces } from "~core/types";
+import type { ImagePhoto, ImagePieces } from "@core/types";
 import { createTestPieces } from "./mocks/fixtures";
 
 describe("useEventGame", () => {

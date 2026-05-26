@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ImagePhoto } from "~/modules/core/types";
+import type { ImagePhoto } from "@core/types";
 
 interface Props {
   isModalOpened: boolean;
@@ -21,7 +21,7 @@ const onClick = (data: ImagePhoto) => {
 </script>
 
 <template>
-  <UiModal :isOpen="isModalOpened" @modal-close="onCloseModal">
+  <UiModal :isOpen="isModalOpened" test-id="select-image-modal" @modal-close="onCloseModal">
     <template #content>
       <div
         class="h-full overflow-auto p-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[linear-gradient(180deg,_#ffffff_0%,_#999999_100%)]"

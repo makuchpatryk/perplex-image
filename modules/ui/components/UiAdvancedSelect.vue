@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import type { TODO } from "~/modules/core/types";
+import type { TODO } from "@core/types";
 
 interface Props {
   value?: T | null;

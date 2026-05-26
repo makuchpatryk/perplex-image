@@ -11,7 +11,16 @@
       </NuxtLink>
     </nav>
     <div class="flex w-full h-full overflow-y-auto overflow-x-hidden">
-      <slot />
+      <Suspense>
+        <template #default>
+          <slot />
+        </template>
+        <template #fallback>
+          <div class="flex items-center justify-center w-full">
+            <div class="text-center">Loading...</div>
+          </div>
+        </template>
+      </Suspense>
     </div>
   </div>
 </template>
