@@ -1,42 +1,80 @@
-# Nuxt 3 Minimal Starter
+# PerplexImage
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Puzzle game built with Nuxt 3. Players complete image puzzles fetched from Pexels API with drag-and-drop gameplay, timers, and move counters.
 
-## Setup
-
-Make sure to install the dependencies:
+## Quick Start
 
 ```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install --shamefully-hoist
+pnpm install
+pnpm dev
 ```
 
-## Development Server
+Open [http://localhost:3000](http://localhost:3000)
 
-Start the development server on http://localhost:3000
+## Features
+
+- **Three difficulty levels:** 9×13, 15×23, 20×30 tiles
+- **Drag-and-drop gameplay:** Move puzzle pieces to complete the image
+- **Real-time stats:** Timer and move counter
+- **Responsive design:** Works on mobile, tablet, and desktop
+- **Image selection:** Browse and select from Pexels API
+- **Game controls:** Pause, reset, and view progress
+
+## Tech Stack
+
+- **Nuxt 3** + Vue 3 Composition API
+- **TypeScript** for type safety
+- **Pinia** for state management
+- **Tailwind CSS** for styling
+- **Playwright** for E2E testing
+- **Vitest** for unit testing
+- **Pexels API** for puzzle images
+
+## Commands
 
 ```bash
-npm run dev
+pnpm dev              # Start dev server
+pnpm build            # Build for production
+pnpm test             # Run unit tests
+pnpm test:e2e         # Run E2E tests
+pnpm test:e2e:ui      # Interactive test UI
+pnpm lint             # Check code quality
+pnpm lintfix          # Auto-fix linting issues
+pnpm typecheck        # TypeScript validation
 ```
 
-## Production
+## Project Structure
 
-Build the application for production:
-
-```bash
-npm run build
+```
+/modules
+  /core        - Shared utilities, store, types
+  /game        - Game pages, components, logic
+  /ui          - Generic UI components
+/tests
+  /e2e         - Playwright E2E tests
+  /units       - Vitest unit tests
+/server/api    - Backend API routes (Pexels proxy)
 ```
 
-Locally preview production build:
+## Environment Setup
 
-```bash
-npm run preview
+Requires `PEXELS_API_KEY` environment variable. Add to `.env`:
+
+```
+PEXELS_API_KEY=your_pexels_api_key
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Development
+
+See [CLAUDE.md](./CLAUDE.md) for detailed architecture, testing patterns, and development workflow.
+
+## Testing
+
+All changes must pass:
+
+- TypeScript: `pnpm typecheck`
+- Unit tests: `pnpm test`
+- E2E tests: `pnpm test:e2e`
+- Linting: `pnpm lint`
+
+Pre-commit hooks (Husky) enforce linting automatically.

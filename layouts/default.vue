@@ -17,7 +17,6 @@
 </template>
 
 <style lang="css">
-
 * {
   font-family: "League Spartan", sans-serif;
 }

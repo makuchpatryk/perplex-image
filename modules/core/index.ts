@@ -1,5 +1,7 @@
+// @ts-expect-error Nuxt types not required for auto-discovery
 import { defineNuxtModule } from "@nuxt/kit";
 import { resolve, join } from "path";
+// @ts-expect-error Nuxt schema types
 import type { Nuxt } from "@nuxt/schema";
 
 export default defineNuxtModule({

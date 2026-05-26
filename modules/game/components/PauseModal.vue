@@ -14,7 +14,7 @@ const onClick = () => {
 </script>
 
 <template>
-  <UiModal :isOpen="isModalOpened">
+  <UiModal :isOpen="isModalOpened" test-id="pause-modal">
     <template #content>
       <div class="h-full flex flex-col items-center justify-center">
         <div class="text-7xl mb-6">Pause</div>

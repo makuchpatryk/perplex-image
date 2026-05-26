@@ -1,6 +1,9 @@
-export interface ResponsePexel {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type TODO = any;
+
+export interface ResponseImage {
   id: string;
-  media: PexelPhoto[];
+  media: ImagePhoto[];
   page: number;
   per_page: number;
   total_results: number;
@@ -8,9 +11,8 @@ export interface ResponsePexel {
   next_page?: string;
 }
 
-export interface PexelPhoto {
+export interface ImagePhoto {
   alt: string;
-  avg_color: string;
   height: number;
   width: number;
   id: number;

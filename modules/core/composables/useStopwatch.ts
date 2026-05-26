@@ -1,4 +1,6 @@
-export async function useStopwatch() {
+import { ref } from "vue";
+
+export function useStopwatch() {
   const startTime = ref<number>(0);
   let stopwatchInterval: string | number | NodeJS.Timeout | null | undefined =
     null;

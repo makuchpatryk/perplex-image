@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LevelsKeys } from "~/modules/core/constants";
+import type { LevelsKeys } from "@core/constants";
 
 interface Props {
   isModalOpened: boolean;
@@ -27,6 +27,7 @@ const submitHandler = () => {
 <template>
   <UiModal
     :isOpen="isModalOpened"
+    test-id="finish-modal"
     @modal-close="closeModal"
     @submit="submitHandler"
   >

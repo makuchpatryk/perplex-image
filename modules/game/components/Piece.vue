@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { WIDTH_GAME } from "../../core/constants";
-import type { ImagePieces } from "~/modules/core/types";
+import { WIDTH_GAME } from "@core/constants";
+import type { ImagePieces } from "@core/types";
 
 interface Props {
   item: ImagePieces;
@@ -16,7 +16,13 @@ withDefaults(defineProps<Props>(), {
   selectedPositions: () => [],
 });
 
-const emit = defineEmits(["swap", "drag-enter", "drag-start", "drag-end", "select"]);
+const emit = defineEmits([
+  "swap",
+  "drag-enter",
+  "drag-start",
+  "drag-end",
+  "select",
+]);
 
 const startDrag = (
   evt: DragEvent & { dataTransfer?: DataTransfer | null },
@@ -31,7 +37,10 @@ const startDrag = (
   evt.dataTransfer.effectAllowed = "move";
   evt.dataTransfer.setData("position", position);
   // Przekaz listę zaznaczonych slotów, żeby drop wiedział o grupie
-  evt.dataTransfer.setData("selectedPositions", JSON.stringify(selectedPositions));
+  evt.dataTransfer.setData(
+    "selectedPositions",
+    JSON.stringify(selectedPositions)
+  );
 
   // Customowy ghost image gdy przeciagamy grupę
   if (selectedPositions.length > 1) {
@@ -40,7 +49,11 @@ const startDrag = (
       "position:fixed;top:-200px;left:-200px;display:flex;align-items:center;justify-content:center;background:rgba(59,130,246,0.9);color:white;font-weight:bold;font-size:16px;border-radius:10px;padding:8px 16px;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.3);gap:6px;";
     ghost.innerHTML = `<span style="font-size:18px;">x${selectedPositions.length}</span><span style="font-size:12px;opacity:0.9;">klocki</span>`;
     document.body.appendChild(ghost);
-    evt.dataTransfer.setDragImage(ghost, ghost.offsetWidth / 2, ghost.offsetHeight / 2);
+    evt.dataTransfer.setDragImage(
+      ghost,
+      ghost.offsetWidth / 2,
+      ghost.offsetHeight / 2
+    );
     setTimeout(() => {
       if (document.body.contains(ghost)) document.body.removeChild(ghost);
     }, 0);
@@ -52,7 +65,8 @@ const onDragEnter = (evt: DragEvent, position: number | string) => {
   evt.stopPropagation();
 
   const draggedPosition = evt.dataTransfer?.getData("position");
-  const rawSelectedPositions = evt.dataTransfer?.getData("selectedPositions") ?? "";
+  const rawSelectedPositions =
+    evt.dataTransfer?.getData("selectedPositions") ?? "";
 
   let selectedPositions: number[] = [];
   try {
@@ -117,6 +131,7 @@ const onPieceClick = (evt: MouseEvent, position: number) => {
     </div>
     <div
       draggable="true"
+      data-testid="puzzle-piece"
       class="overflow-hidden"
       @dragstart="startDrag($event, String(item.position), selectedPositions)"
       @dragend="emit('drag-end')"
